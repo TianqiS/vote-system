@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2017杭电十佳教师评选-教师展示</title>
+    <script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
+    <script src="./js/teacherData.js" type="text/javascript"></script>
+    <script src="./js/utils.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/bars.css">
+
+</head>
+<style>
+    .personInfo .nameRoller {
+        width: 900px;
+        margin: 80px auto 40px auto;
+    }
+
+    .personInfo .nameRoller .line1 {
+        font-size: 30px;
+        letter-spacing: 3px;
+    }
+
+    .personInfo .nameRoller .line2 {
+        letter-spacing: 3px;
+        margin-top: 15px;
+        font-size: 30px;
+        font-weight: bolder;
+        color: #555;
+    }
+
+    .personInfo .pic {
+        background-size: cover;
+        border-radius: 10px;
+        width: 700px;
+        height: 400px;
+        margin: 40px auto 40px auto;
+    }
+
+    .personInfo .intro {
+        text-align: left;
+        width: 700px;
+        margin: 40px auto 190px auto;
+    }
+
+
+    .personInfo .intro .line1{
+        text-align: center;
+        margin: 0 auto 20px auto;
+        font-size: 14px;
+    }
+
+    .personInfo .intro .line2{
+        vertical-align: middle;
+        text-align: center;
+        font-family: 方正粗宋简体;
+        color: #999;
+        margin: 0 auto 20px auto;
+        font-size: 50px;
+
+    }
+    .personInfo .intro .line2 span{
+        line-height: 35px;
+        vertical-align: top;
+        font-family: 微软雅黑;
+        margin-top:0;
+
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+
+    .personInfo .intro .line3{
+        text-align: center;
+        margin: 30px auto 30px auto;
+        font-weight: bolder;
+        font-size: 30px;
+        color: #555;
+    }
+    .personInfo .intro .line4{
+       white-space: pre-wrap;
+    }
+
+</style>
+
+
+<body class="personInfo">
+<div class="topbar">
+    <div class="topContainer">
+        <span class="logoL"> <img src="./pic/logo.png" alt=" "> </span>
+        <div>
+        <span class="topTitle">
+            <div class=":active"><a href="./talentShow.html">风采展示</a></div>
+            <div class=":underline"></div>
+        </span>
+        <span class="topTitle">
+            <div class=":active"><a href="./vote.html">为Ta投票</a></div>
+            <div class=":underline"></div>
+        </span>
+        </div>
+    </div>
+</div>
+<div class="nameRoller">
+    <div class="line1 stress"></div>
+    <div class="line2"></div>
+</div>
+<div class="pic"></div>
+</di>
+<div class="intro">
+    <div class="line1">· <span></span> ·</div>
+    <div class="line2">“ <span></span> ”</div>
+    <div class="line3">个人事迹</div>
+    <div class="line4"></div>
+</div>
+
+<div class="bottombar">@ 2017.Powered by RedHome Studio</div>
+</body>
+</html>
+
+
+<script>
+    $(function () {
+        var i=getSearchObject().id; //老师编号
+        var info=teacherInfo[i-1]
+        $('.nameRoller .line1').html(info.number);
+        $('.nameRoller .line2').html(info.teacher);
+        $('.pic').css("background-image",'url("./pic/teacherLong/'+info.teacher+'.jpg")');
+        $('.intro .line1 span').html(info.department);
+        $('.intro .line2 span').html(info.motto);
+        $('.intro .line4').html(info.detail);
+
+    })
+</script>
