@@ -7,6 +7,10 @@ let voteNumberModule = require('../modules/voteNumber');
 let teacherModule = require('../modules/teacher');
 let mid = require('../utils/middleware');
 
+/**
+ * 登陆
+ * 参数：userName, password
+ */
 router.post('/login', async function (ctx) {
     let info = _.pick(ctx.request.body, ['userName', 'password']);
 
@@ -22,7 +26,10 @@ router.post('/login', async function (ctx) {
         session: ctx.session
     }
 });
-
+/**
+ * 投票
+ * 参数：教师Id（数组）， 邀请码（字符串）
+ */
 router.post('/vote',mid.timeControl(), async ctx => {
     let info = _.pick(ctx.request.body, ['teacherId', 'code']);
     let teacherArray = info.teacherId.sort();
@@ -53,14 +60,19 @@ router.post('/vote',mid.timeControl(), async ctx => {
     }
 
 });
-
+/**
+ * 获取投稿时间
+ *
+ */
 router.get('/time', async ctx => {
     ctx.body = {
         time: timeInterval || 0,
         duration: duration
     };
 });
-
+/**
+ * 获取投票结果
+ */
 router.get('/getResult', async ctx => {
     let result = await voteNumberModule.getResult();
 

@@ -4,7 +4,10 @@ let router = require('koa-router')({
 let _ = require('lodash');
 let invitationCodeModule = require('../modules/invitationCode');
 let voteNumberModule = require('../modules/voteNumber');
-
+/**
+ * 开始投票
+ * 参数：duration(分钟)
+ */
 router.get('/start', async ctx => {
     global.duration = _.pick(ctx.request.query, ['duration']).duration;
     global.timeInterval = new Date().getTime();
@@ -27,7 +30,9 @@ router.get('/start', async ctx => {
         message: '开始成功'
     };
 });
-
+/**
+ * 重置投票
+ */
 router.get('/reset', async ctx => {
     await invitationCodeModule.reset();
     await voteNumberModule.reset();
