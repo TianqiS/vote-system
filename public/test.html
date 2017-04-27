@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>
+    <script>
+        var socket = io.connect('/');
+        socket.on('test', function () {
+            console.log('test');
+        });
+        socket.on('test1', function () {
+            socket.emit('test1', {
+                name: 'song'
+            })
+        })
+    </script>
+</head>
+<body>
+
+</body>
+</html>
