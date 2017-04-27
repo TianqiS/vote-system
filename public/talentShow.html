@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/bars.css">
     <link rel="stylesheet" href="./css/utils.css">
+
 </head>
 <style>
     .talentShow .container .notice {
@@ -37,25 +38,23 @@
         right: 0;
         top: 0;
         bottom: 0;
-    }
-
-    .talentShow .container .votelist .teacherBox .button a {
         color: white;
         font-size: 12px;
         letter-spacing: 2px;
     }
 
-    .talentShow .container .votelist .teacherBox.active .button{
+
+    .talentShow .container .votelist .teacherBox:hover .button{
         display:block;
     }
 
-    .talentShow .container .votelist .teacherBox.active .shade{
+    .talentShow .container .votelist .teacherBox:hover .shade{
         display: none;
     }
 
 
         /*****************************************************************/
-    .talentShow .container .votelist .teacherBox .info {
+    .teacherBox .info {
         height: 140px;
         width: 300px;
         position: absolute;
@@ -65,24 +64,24 @@
         top: 0;
         bottom: 0;
     }
-    .talentShow .container .votelist .teacherBox .info .line1 {
+    .teacherBox .info .line1 {
         font-size: 22px;
         letter-spacing: 2px;
     }
 
-    .talentShow .container .votelist .teacherBox .info .line2 {
+    .teacherBox .info .line2 {
         font-weight: bold;
         font-size: 17px;
         letter-spacing: 4px;
         margin: 10px 0 15px 0;
     }
 
-    .talentShow .container .votelist .teacherBox .info .line3 {
+    .teacherBox .info .line3 {
         font-size: 12px;
         letter-spacing: 1px;
     }
 
-    .talentShow .container .votelist .teacherBox .info .line4 {
+    .teacherBox .info .line4 {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -91,7 +90,7 @@
         margin: 15px auto 0 auto;
     }
 
-    .talentShow .container .votelist .teacherBox.active .info {
+    .teacherBox:hover .info {
         display: none;
     }
 /************************************************************************/
@@ -140,9 +139,9 @@
 <script id="teacherContainer" type="application/xml">
     <div class="teacherBox" style="background-image:url('./pic/teacherLong/__teacher__.jpg')" id="__id__">
         <div class="shade"></div>
-        <div class="button">
-            <a href="./personInfo.html?id=__id__">查看介绍</a>
-        </div>
+        <a class="button" href="./personInfo.html?id=__id__">
+            查看介绍
+        </a>
         <div class="info">
             <div class="line1 stress">__number__</div>
             <div class="line2">__teacher__</div>
@@ -169,12 +168,8 @@
         });
 
         //教师选择
-        $('.teacherBox').on('mouseover', function () {
-            $(this).addClass("active");
-        });
-        $('.teacherBox').on('mouseout', function () {
-            $(this).removeClass("active");
-        });
-
+        $('.button').on("click",function () {
+            $(this).find("a").click();
+        })
     })
 </script>
