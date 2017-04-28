@@ -317,7 +317,6 @@
         var sum=0;
         var $sum=$('.submission .stress');
         var $submit=$('.submit');
-        var teacherSelected=[];
         $(".teacherBox").on("click",function () {
             var $this=$(this);
             var id=$(this).attr("id");
@@ -342,28 +341,46 @@
             }
 
         }
-
         $submit.on('click', function () {
-           $(".teacherBox.active").each(function () {
-               teacherSelected.push($(this).attr("id"));
-           })
-         //   console.log(teacherSelected);
             $(".vote").addClass("alert");
         })
 
     })
 </script>
 <script>
+
     $('.voterCheck .exit').on("click", function () {
         $(".voterCheck .cdk").val('');
         $(".vote").removeClass("alert");
     })
-
     //确认提交投票
-    $('.voterCheck input[value=submit]').on("click", function () {
-        var cdk = $(".cdk").val();
-    })
 
+    $('.voterCheck input[type=submit]').on("click", function () {
+        var cdk = $(".cdk").val();
+        var teacherSelected=[];
+        $(".teacherBox.active").each(function () {
+            teacherSelected.push($(this).attr("id"));
+        });
+        console.log(teacherSelected);
+        $.ajax({
+            method:"post",
+            url:"/common/vote",
+            data:{
+                code:cdk,
+                teacherId:teacherSelected
+            },
+            success:function(){
+                alert("投票成功，感谢您宝贵的一票~");
+                $(".voterCheck .cdk").val('');
+                $(".vote").removeClass("alert");
+                $(".teacherBox").css("pointer-events","none");
+                $(".submission").hide();
+            },
+            error:function(data){
+                alert(data.responseJSON.msg);
+            }
+        })
+    })
 </script>
 <script>
     $.ajax({
@@ -383,6 +400,9 @@
             });
             $('.votelist').show();
             $('.submission').show();
+        },
+        error:function () {
+            alert("服务器开小差了哦~");
         }
     })
 
