@@ -9,5 +9,5 @@ exports.getCode = function (code) {
 };
 
 exports.reset = function () {
-    return invitationCodeModel.update(db,{}, 0, null);
+    return invitationCodeModel.update(db,{}, null);
 };

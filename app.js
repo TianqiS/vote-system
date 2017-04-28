@@ -4,6 +4,7 @@ let db = require('./utils/db');
 let mid = require('./utils/middleware');
 let admin = require('./contorllers/admin');
 let common = require('./contorllers/common');
+let socket = require('./utils/websocket');
 
 let app = new koa();
 global.db = db;
@@ -27,7 +28,7 @@ app.use(admin);
 app.use(common);
 
 
-
-app.listen(3001);
-
+let server = app.listen(3001);
+//websocket
+socket.socketServer(server);
 

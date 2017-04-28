@@ -1,7 +1,7 @@
 let Model = require('../utils/Model');
 let voteNumber = new Model('vote_number');
 
-voteNumber.getResult = function (db, query) {
+voteNumber.getInfo = function (db, query) {
     return this.get(db, query);
 };
 
@@ -10,7 +10,11 @@ voteNumber.vote = function (db, ids, query) {
 };
 
 voteNumber.reset = function () {
-    return this.get(db, {}).update({number_of_votes: 0});
+    return this.get(db, {}).update({
+        number_of_votes: 0,
+        expert_number: 0,
+        ordinary_number: 0
+    });
 };
 
 module.exports = voteNumber;

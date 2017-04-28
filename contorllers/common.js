@@ -4,7 +4,6 @@ let router = require('koa-router') ({
 let _ = require('lodash');
 let invitationCodeModule = require('../modules/invitationCode');
 let voteNumberModule = require('../modules/voteNumber');
-let teacherModule = require('../modules/teacher');
 let mid = require('../utils/middleware');
 
 /**
@@ -35,13 +34,15 @@ router.post('/vote',mid.timeControl(), async ctx => {
     let teacherArray = info.teacherId.sort();
 
     let codeInfo = await invitationCodeModule.getCode(info.code).first();
-    let teacherInfo = await teacherModule.getTeacher(info.teacherId);
     //条件判断(邀请码是否存在，投票数目，教师是否存在)
-    if(!codeInfo || info.teacherId.length < 8 || info.teacherId.length > 10 || teacherInfo.length != info.teacherId.length) {
+    for(let i of info.teacherId) {
+        if(i < 1 || i > 19) throw 40001;
+    }
+    if(!codeInfo || info.teacherId.length < 8 || info.teacherId.length > 10) {
         throw 40001;
     }
     //判断邀请码状态
-    if(codeInfo.status == 1) {
+    if(codeInfo.vote_direction) {
         throw 40002;
     }
 
@@ -53,7 +54,10 @@ router.post('/vote',mid.timeControl(), async ctx => {
     }
     //投票
     await voteNumberModule.vote(info);
-
+    global.io.emit('vote', {
+        vote_direction: info.teacherId,
+        codeNumber: info.code
+    });
     ctx.body = {
         status : 'success',
         msg : '投票成功'
@@ -66,15 +70,15 @@ router.post('/vote',mid.timeControl(), async ctx => {
  */
 router.get('/time', async ctx => {
     ctx.body = {
-        time: global.timeInterval || new Date().getTime(),     //开始的时间戳
-        duration: global.duration  || 3     //设定的投票时间：n分钟
+        time: global.timeInterval || 0,     //开始的时间戳
+        duration: global.duration  || 0     //设定的投票时间：n分钟
     };
 });
 /**
  * 获取投票结果
  */
 router.get('/getResult', async ctx => {
-    let result = await voteNumberModule.getResult();
+    let result = await voteNumberModule.getInfo();
 
     ctx.body = {
         result: result
