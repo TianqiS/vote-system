@@ -91,8 +91,11 @@
 
     .vote .container .timeleft {
         font-size: 18px;
-        margin-top: 15px;
+        margin: 15px;
         letter-spacing: 4px;
+    }
+    .submission{
+        display: none;
     }
     .submission .stress {
         font-size: 21px;
@@ -207,6 +210,8 @@
 
     .vote.alert .overlay{
         display: block;
+        position: fixed;
+        height: 100%;
     }
     .vote.alert .voterCheck{
         display: block;
@@ -254,7 +259,7 @@
     </div>
     <div>
         <div>距投票结束还有</div>
-        <div class="timeleft">00:00:00</div>
+        <div class="timeleft">投票未开始</div>
     </div>
 
     <div class="votelist"></div>
@@ -278,14 +283,6 @@
 
 
 
-
-
-
-
-
-
-
-
 <script id="teacherContainer" type="application/xml">
     <div class="teacherBox" style="background-image:url('./pic/teacherLong/__name__.jpg')" id="__id__">
         <div class="shade"></div>
@@ -299,6 +296,8 @@
         </div>
     </div>
 </script>
+
+
 <script>
     $(function () {
         //列表建立
@@ -344,9 +343,6 @@
 
         }
 
-        var docHeight = $(document).height(); //获取窗口高度
-        $('.overlay').height(docHeight);
-
         $submit.on('click', function () {
            $(".teacherBox.active").each(function () {
                teacherSelected.push($(this).attr("id"));
@@ -362,13 +358,33 @@
         $(".voterCheck .cdk").val('');
         $(".vote").removeClass("alert");
     })
+
+    //确认提交投票
     $('.voterCheck input[value=submit]').on("click", function () {
         var cdk = $(".cdk").val();
-//        $(".voterCheck .cdk").val('');
-//        $(".voterCheck").hide();
-//        $(".overlay").hide();
     })
 
 </script>
+<script>
+    $.ajax({
+        method:"get",
+        url:"/common/time",
+        success:function (data) {
+            if (data.duration == 0 || data.time == 0) {
+                return;
+            }
+            if (data.time + data.duration * 60 * 1000 < new Date().getTime()) {
+                //over
+                window.location.href="./voteEnd.html";
+                return;
+            }
+            timeCount(data.time, data.duration, function () {
+                window.location.href="./voteEnd.html";
+            });
+            $('.votelist').show();
+            $('.submission').show();
+        }
+    })
 
+</script>
 </html>

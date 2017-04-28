@@ -66,8 +66,8 @@ router.post('/vote',mid.timeControl(), async ctx => {
  */
 router.get('/time', async ctx => {
     ctx.body = {
-        time: timeInterval || 0,
-        duration: duration 
+        time: global.timeInterval || new Date().getTime(),     //开始的时间戳
+        duration: global.duration  || 3     //设定的投票时间：n分钟
     };
 });
 /**

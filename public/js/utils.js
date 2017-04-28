@@ -38,3 +38,38 @@ function onlyNum()
     if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105)||(event.keyCode==8)))
         event.returnValue=false;
 }
+
+var timeLeft;
+//获取剩余时间,返回文本00:00:00
+//timeLeap为设定分钟
+
+function timeCount(timeStart, timeLeap, cb){
+    var $timeLeft = $(".timeleft");
+
+    var timeNow = new Date().getTime();
+    var timeEnd = timeStart + 1000 * 60 * timeLeap;
+    timeLeft = timeEnd - timeNow;
+
+    $timeLeft.html(time2txt(timeLeft));
+    var i = setInterval(function(){
+        timeLeft-=1000;
+        if (timeLeft < 0) {
+            clearInterval(i);
+            cb();
+        }
+        $timeLeft.html(time2txt(timeLeft));
+    },1000);
+
+}
+
+function time2txt(timeleft){
+    var a=new Date(timeleft);
+    var sec=a.getSeconds();
+    var min=a.getMinutes();
+    var hour=a.getHours()-8;
+    return num2txt(hour)+":"+num2txt(min)+":"+num2txt(sec);
+}
+
+function num2txt(number){
+    return number / 10 > 1 ? number : '0' + number;
+}
