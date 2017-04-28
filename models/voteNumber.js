@@ -5,8 +5,8 @@ voteNumber.getResult = function (db, query) {
     return this.get(db, query);
 };
 
-voteNumber.vote = function (db, ids) {
-    return this.table(db).whereIn('id', ids).increment('number_of_votes', 1);
+voteNumber.vote = function (db, ids, query) {
+    return this.table(db).whereIn('id', ids).update(query);
 };
 
 voteNumber.reset = function () {
