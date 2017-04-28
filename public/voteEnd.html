@@ -178,6 +178,37 @@
 
 <script>
     $(function () {
+        $.ajax({
+            method:"get",
+            url:"/common/time",
+            success:function (data) {
+                if (data.duration == 0 || data.time == 0) {
+                    localStorage.setItem("voteStatus",'unbegin');
+                    window.location.href="./vote.html";
+                    return;
+                }
+                if (data.time + data.duration * 60 * 1000 < new Date().getTime()) {
+                    return;
+                }
+                localStorage.removeItem("voteStatus");
+                window.location.href="./vote.html";
+            },
+            error:function () {
+                alert("服务器开小差了哦~");
+            }
+        })
+
+        $.ajax({
+            method:"get",
+            url:"/common/getResult",
+            success:function (data) {
+                console.log(data);
+            },
+            error:function () {
+
+            }
+        })
+
         //教师列表
         var teacherContainerCode = $('#teacherContainer').html();
         teacherInfo.forEach(function (e) {
@@ -188,6 +219,10 @@
             });
             $('.voteEndList').append(str)
         });
+
+        //显示列表
+
+
     })
 </script>
 

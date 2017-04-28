@@ -53,7 +53,7 @@ function timeCount(timeStart, timeLeap, cb){
     $timeLeft.html(time2txt(timeLeft));
     var i = setInterval(function(){
         timeLeft-=1000;
-        if (timeLeft < 0) {
+        if (timeLeft < 999) {
             clearInterval(i);
             cb();
         }
@@ -71,5 +71,5 @@ function time2txt(timeleft){
 }
 
 function num2txt(number){
-    return number / 10 > 1 ? number : '0' + number;
+    return number / 10 >= 1 ? number : '0' + number;
 }

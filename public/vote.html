@@ -49,6 +49,7 @@
         background-size: cover;
     }
     .teacherBox .numberCoin {
+        animation:sideIn 1.5s;
         height: 100%;
         width: 100%;
         font-size: 17px;
@@ -291,7 +292,6 @@
                 <span>__number__</span>
                 <img src='./pic/icon/勾.png' style=''/>
             </div>
-
             <div>__name__</div>
         </div>
     </div>
@@ -300,64 +300,96 @@
 
 <script>
     $(function () {
-        //列表建立
-        var teacherContainerCode = $('#teacherContainer').html();
-        teacherInfo.forEach(function (e) {
-            var str = teacherContainerCode.replaceAll({
-                '__name__': e.teacher,
-                '__id__': e.id,
-                '__number__': e.number
-            });
-            $('.votelist').append(str)
-        });
 
+        //各状态显示
+        var voteStatus=localStorage.getItem('voteStatus');
+        if(voteStatus=='done'){
+            $(".votelist").show();
+        }
+        else if(voteStatus=='unbegin'){
+        }
+        else{
+            $('.votelist').show();
+            $('.submission').show();
+        }
+
+        //列表建立
+
+            var teacherContainerCode = $('#teacherContainer').html();
+            teacherInfo.forEach(function (e) {
+                var str = teacherContainerCode.replaceAll({
+                    '__name__': e.teacher,
+                    '__id__': e.id,
+                    '__number__': e.number
+                });
+                $('.votelist').append(str)
+            });
 
         //教师选择
+        if(voteStatus!='done') {
+            var sum = 0;
+            var $sum = $('.submission .stress');
+            var $submit = $('.submit');
+            $(".teacherBox").on("click", function () {
+                var $this = $(this);
+                var id = $(this).attr("id");
+                if ($this.hasClass('active')) {
+                    $this.removeClass("active");
+                    sum--;
+                    activeJdg();
+                }
+                else {
+                    $this.addClass("active")
+                    sum++;
+                    activeJdg();
+                }
+                $sum.html(sum + "/20");
+            })
+            function activeJdg() {
+                if (sum >= 8 && sum <= 10) {
+                    $submit.addClass("active");
+                }
+                else {
+                    $submit.removeClass("active");
+                }
 
-        var sum=0;
-        var $sum=$('.submission .stress');
-        var $submit=$('.submit');
-        $(".teacherBox").on("click",function () {
-            var $this=$(this);
-            var id=$(this).attr("id");
-            if ($this.hasClass('active')){
-                $this.removeClass("active");
-                sum--;
-                activeJdg();
-            }
-            else {
-                $this.addClass("active")
-                sum++;
-                activeJdg();
-            }
-            $sum.html(sum+"/20");
-        })
-        function activeJdg() {
-            if(sum>=8&&sum<=10){
-                $submit.addClass("active");
-            }
-            else{
-                $submit.removeClass("active");
             }
 
+            $submit.on('click', function () {
+                $(".vote").addClass("alert");
+            })
         }
-        $submit.on('click', function () {
-            $(".vote").addClass("alert");
-        })
+        else{
+            haveVote();
+        }
 
     })
 </script>
 <script>
 
+    var teacherSelected=[];
+    //保留已投的结果
+    function haveVote(){
+        teacherSelected=(localStorage.getItem('teacherSelected')).split(",");
+        console.log(teacherSelected);
+        for(var i in teacherSelected){
+            $(".votelist .teacherBox:nth-of-type("+teacherSelected[i]+")").addClass("active");
+        }
+        $(".teacherBox").css("pointer-events","none");
+    }
+
+
+    //关闭邀请码窗口
     $('.voterCheck .exit').on("click", function () {
         $(".voterCheck .cdk").val('');
         $(".vote").removeClass("alert");
     })
-    //确认提交投票
 
+
+    //确认提交投票
     $('.voterCheck input[type=submit]').on("click", function () {
         var cdk = $(".cdk").val();
-        var teacherSelected=[];
+        teacherSelected=[];
         $(".teacherBox.active").each(function () {
             teacherSelected.push($(this).attr("id"));
         });
@@ -371,10 +403,9 @@
             },
             success:function(){
                 alert("投票成功，感谢您宝贵的一票~");
-                $(".voterCheck .cdk").val('');
-                $(".vote").removeClass("alert");
-                $(".teacherBox").css("pointer-events","none");
-                $(".submission").hide();
+                localStorage.setItem('voteStatus','done');
+                localStorage.setItem('teacherSelected',teacherSelected);
+                location.reload();
             },
             error:function(data){
                 alert(data.responseJSON.msg);
@@ -383,11 +414,14 @@
     })
 </script>
 <script>
+
+    //加入到倒计时
     $.ajax({
         method:"get",
         url:"/common/time",
         success:function (data) {
             if (data.duration == 0 || data.time == 0) {
+                localStorage.setItem("voteStatus",'unbegin');
                 return;
             }
             if (data.time + data.duration * 60 * 1000 < new Date().getTime()) {
@@ -395,11 +429,11 @@
                 window.location.href="./voteEnd.html";
                 return;
             }
+            localStorage.removeItem("voteStatus");
             timeCount(data.time, data.duration, function () {
                 window.location.href="./voteEnd.html";
+
             });
-            $('.votelist').show();
-            $('.submission').show();
         },
         error:function () {
             alert("服务器开小差了哦~");

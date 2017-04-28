@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>2017杭电十佳教师评选-投票结果</title>
+    <script src="./js/utils.js" type="text/javascript"></script>
     <script src="./js/echarts.min.js" type="text/javascript"></script>
     <script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/utils.css">
     <link rel="stylesheet" href="./css/bars.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <style>
     .topContainer .topTitle {
@@ -63,8 +63,8 @@
 </div>
 <div class="timebar">
     <div class="timeleft">00:00:00</div>
-    <img src="./pic/icon/开始.png" alt=" " title="计时开始">
-    <img src="./pic/icon/重置.png" alt=" " title="重新计时">
+    <img src="./pic/icon/开始.png" alt=" " title="计时开始" class="timeStart">
+    <img src="./pic/icon/重置.png" alt=" " title="重新计时" class="timeReset">
     <div class="checkbox">
         <span><input type="checkbox" id="show10">显示前十名</span>
         <span><input type="checkbox" id="showTicket">显示具体票数</span>
@@ -74,7 +74,82 @@
 <div class="bottombar">@ 2017.Powered by RedHome Studio</div>
 </body>
 </html>
+<script>
+    $(function () {
 
+        //检查是否有权限
+        var session=localStorage.getItem("session");
+        if(session!='admin'){
+            alert("请先登录");
+            window.location.href='./login.html';
+        }
+
+
+        $.ajax({
+            method:"get",
+            url:"/common/time",
+            success:function (data) {
+                if (data.duration == 0 || data.time == 0) {
+                    return;
+                }
+                if (data.time + data.duration * 60 * 1000 < new Date().getTime()) {
+                    //over
+                    return;
+                }
+                timeCount(data.time, data.duration, function () {
+                });
+            },
+            error:function () {
+                alert("服务器开小差了哦~");
+            }
+        })
+
+        //设定时长
+        var duration=3;
+        $('.timeleft').html("00:"+num2txt(duration)+":00");
+        $('.timeStart').on("click",function(){
+            $.ajax({
+                method:"get",
+                url:"/admin/start?duration="+duration,
+                success:function(){
+                    $.ajax({
+                        method:"get",
+                        url:"/admin/reset",
+                        success:function () {
+                            location.reload();
+                        }
+                    })
+                },
+                error:function (data) {
+                    alert(data.msg);
+                }
+            })
+        })
+
+
+
+        $('.timeReset').on("click",function() {
+            $.ajax({
+                method:"get",
+                url:"/admin/start?duration=0",
+                success:function () {
+                    $.ajax({
+                        method:"get",
+                        url:"/admin/reset",
+                        success:function () {
+                            location.reload();
+                        }
+                    })
+                }
+            })
+        })
+
+
+
+
+    });
+
+</script>
 <script name="map_var">
     var map = echarts.init(document.getElementById("map"));
     var show10, ticket;            //checkbox监听
@@ -111,7 +186,9 @@
     }
 
 </script>
+
 <script name="map">
+
     //条形图
     var option;
     function makemap() {

@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎来到十佳教师后台</title>
+    <link href="./css/common.css" rel="styleSheet">
+    <script src="./js/jquery-2.0.0.min.js"></script>
+    <style>
+    body {
+        position: relative;
+        font-weight: 500;
+    }
+
+    #container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        padding: 0 50px;
+        width: 500px;
+        text-align: center;
+        height: 380px;
+        font-size: 30px;
+        color: #3397db
+    }
+
+    #container input {
+        color: #3397db;
+        font-size: 16px;
+        font-weight: 500;
+        outline: 0;
+        border: solid #3397db 1px;
+        width: 352px;
+        height: 47px;
+        padding: 0 10px
+    }
+
+    #container .user {
+        margin-top: 66px
+    }
+
+    #container .password {
+        margin-top: 24px
+    }
+
+    #container input[type=submit] {
+        font-size: 17px;
+        color: #fff;
+        width: 130px;
+        margin-top: 45px;
+        border: none;
+        border-radius: 12px;
+        background-color: #3397db;
+        cursor: pointer;
+        outline: 0
+    }
+
+    #container input[type=submit]:hover {
+        background-color: #44a8ec
+    }
+
+    #container .response {
+        margin-top: 20px;
+        color: red;
+        font-size: 12px
+    }</style>
+</head>
+<body>
+<div id="container">
+    <div class="title">后 台 登 录</div>
+    <input placeholder="账户" type="text" class="user"><input placeholder="密码" type="password" class="password">
+    <div><input value="登 录" type="submit"></div>
+    <div class="response"></div>
+</div>
+</body>
+<script>$(function () {
+    localStorage.clear();
+    $(document).keyup(function (t) {
+        13 == t.keyCode && $("input[type=submit]").click()
+    }), $("input[type=submit]").on("click", function () {
+        var t = $(".user").val(), a = $(".password").val();
+        if (!t || !a)return void alert("用户名密码不能为空！");
+        var e = $("input[type=submit]");
+        e.val("请稍候");
+        $.ajax({
+            method: "post",
+            url: "/common/login",
+            data: {userName: t, password: a},
+            success: function (a) {
+                if ("success" == a.status){
+                    localStorage.setItem("session",a.session.type);
+                    window.location.href='./voteResult.html';
+                }
+            },
+            error: function (t) {
+                403 == t.status ? (e.attr("value", "登 录"), $(".response").html("登陆失败 请输入正确的用户名密码")) : (alert("连接超时 请稍后重试"), e.attr("value", "登 录"))
+            }
+        })
+    })
+})</script>
+</html>
