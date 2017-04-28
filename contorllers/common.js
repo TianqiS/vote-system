@@ -41,7 +41,7 @@ router.post('/vote',mid.timeControl(), async ctx => {
         throw 40001;
     }
     //判断邀请码状态
-    if(codeInfo.status == 1) {
+    if(codeInfo.vote_direction) {
         throw 40002;
     }
 

@@ -16,7 +16,7 @@ exports.vote = function (info) {
             }
              yield voteNumberModel.vote(trx, info.teacherId, increment);
             //更新邀请码状态
-            yield invitationCodeModel.update(trx, {invitation_code: info.code}, 1, info.teacherId.toString());
+            yield invitationCodeModel.update(trx, {invitation_code: info.code}, info.teacherId.toString());
         }).then(trx.commit).catch(trx.rollback);
     });
 };
