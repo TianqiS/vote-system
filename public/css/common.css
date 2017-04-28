@@ -1,43 +1,41 @@
-body{
+html, body{
+    font-family: "微软雅黑";
+    margin:0;
+    padding:0;
     color: #888;
     text-align: center;
-    font-family: "微软雅黑";
-    min-width:1000px;
+    min-width: 200px;
+    min-height: 100%;
 }
-html,body{
-    padding:0;
-    margin:0;
-    min-height:100%;
+img {
+    max-width: 100%;
 }
-
-.container{
-    min-width:1000px;
-}
-
-
 img:hover{
     cursor: pointer;
 }
-
-input[type=checkbox]:hover{
-    cursor: pointer;
-}
-
 a,a:hover,a:visited,a:link,a:active{
     text-decoration:none;
 }
-
 a{
     color: rgba(255, 255, 255, 0.5);
 }
-
-
+.absolute {
+    position: absolute;
+}
+.absolute.center {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+}
 .stress{
     font-weight: bolder;
     text-decoration: none;
     background: -webkit-gradient(linear,left top,left bottom,from(#2980b9),to(#33cccc));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin: 30px 0;
 }
 
 @keyframes sideFadeIn {
@@ -74,9 +72,5 @@ input[type=submit]{
     outline: none;
     color: #ffffff;
     font-weight: bold;
-}
-
-
-input[type=submit]:hover{
     cursor: pointer;
 }
