@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50096
 File Encoding         : 65001
 
-Date: 2017-04-28 13:02:58
+Date: 2017-04-28 15:31:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -215,23 +215,25 @@ CREATE TABLE `vote_number` (
   `id` int(5) NOT NULL auto_increment,
   `name` varchar(255) character set utf8 NOT NULL,
   `number_of_votes` int(10) NOT NULL default '0',
+  `expert_number` int(10) NOT NULL default '0',
+  `ordinary_number` int(10) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of vote_number
 -- ----------------------------
-INSERT INTO `vote_number` VALUES ('1', '1', '2');
-INSERT INTO `vote_number` VALUES ('2', '2', '2');
-INSERT INTO `vote_number` VALUES ('3', '3', '2');
-INSERT INTO `vote_number` VALUES ('4', '4', '2');
-INSERT INTO `vote_number` VALUES ('5', '5', '2');
-INSERT INTO `vote_number` VALUES ('6', '6', '2');
-INSERT INTO `vote_number` VALUES ('7', '7', '2');
-INSERT INTO `vote_number` VALUES ('8', '8', '2');
-INSERT INTO `vote_number` VALUES ('9', '9', '1');
-INSERT INTO `vote_number` VALUES ('10', '10', '0');
-INSERT INTO `vote_number` VALUES ('11', '11', '0');
+INSERT INTO `vote_number` VALUES ('1', '1', '2', '0', '0');
+INSERT INTO `vote_number` VALUES ('2', '2', '2', '0', '0');
+INSERT INTO `vote_number` VALUES ('3', '3', '2', '0', '0');
+INSERT INTO `vote_number` VALUES ('4', '4', '2', '0', '0');
+INSERT INTO `vote_number` VALUES ('5', '5', '2', '0', '0');
+INSERT INTO `vote_number` VALUES ('6', '6', '2', '0', '0');
+INSERT INTO `vote_number` VALUES ('7', '7', '2', '0', '0');
+INSERT INTO `vote_number` VALUES ('8', '8', '2', '0', '0');
+INSERT INTO `vote_number` VALUES ('9', '9', '1', '0', '0');
+INSERT INTO `vote_number` VALUES ('10', '10', '0', '0', '0');
+INSERT INTO `vote_number` VALUES ('11', '11', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for _mysql_session_store
