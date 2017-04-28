@@ -9,21 +9,8 @@ let voteNumberModule = require('../modules/voteNumber');
  * 参数：duration(分钟)
  */
 router.get('/start', async ctx => {
-    global.duration = _.pick(ctx.request.query, ['duration']).duration;
+    global.duration = _.pick(ctx.request.query, ['duration']).duration || 3;
     global.timeInterval = new Date().getTime();
-
-    io.on('connection', function (socket){
-        console.log('connection')
-        socket.on('server', function (data) {
-            console.log('server')
-        })
-        socket.on('test1', function (data) {
-            console.log('test1')
-            console.log(data)
-        })
-        socket.emit('test');
-        socket.emit('test1');
-    });
 
     ctx.body = {
         status: 'success',

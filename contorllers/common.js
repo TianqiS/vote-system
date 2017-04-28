@@ -66,8 +66,8 @@ router.post('/vote',mid.timeControl(), async ctx => {
  */
 router.get('/time', async ctx => {
     ctx.body = {
-        time: timeInterval || 0,
-        duration: duration
+        time: global.timeInterval || 0,
+        duration: global.duration || 0
     };
 });
 /**

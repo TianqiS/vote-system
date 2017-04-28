@@ -28,17 +28,6 @@ app.use(common);
 
 
 
-let server = app.listen(3000);
-
-
-// io.on('connection', function (socket) {
-//     console.log('connection');
-//     socket.on('test', function(data) {
-//         console.log('test' + data);
-//     });
-//     socket.emit('test1');
-//     socket.emit('test');
-// });
-global.io = require('socket.io')(server);
+app.listen(3000);
 
 

@@ -5,8 +5,11 @@ invitationCode.getCode = function (db, query) {
     return this.get(db, query);
 };
 
-invitationCode.update = function (db, query, status) {
-    return this.get(db, query).update({status: status});
+invitationCode.update = function (db, query, status, direction) {
+    return this.get(db, query).update({
+        status: status,
+        vote_direction: direction
+    });
 };
 
 module.exports = invitationCode;
