@@ -25,6 +25,6 @@ exports.reset = function () {
     return voteNumberModel.reset();
 };
 
-exports.getInfo = function (query) {
-    return voteNumberModel.getInfo(db, {id: query});
+exports.getInfo = function () {
+    return voteNumberModel.getInfo(db, {});
 };
