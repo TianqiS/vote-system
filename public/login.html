@@ -1,102 +1,235 @@
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>欢迎来到十佳教师后台</title>
-    <link href="./css/common.css" rel="styleSheet">
-    <script src="./js/jquery-2.0.0.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=0"/>
+    <title>十佳教师</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <link rel="stylesheet" href="./css/common.css">
     <style>
-    body {
-        position: relative;
-        font-weight: 500;
-    }
+        .background {
+            background: url('./pic/background.jpg');
+            background-size: cover;
+            background-position: 50%;
+        }
+        .background > div {
+            height: 100%;
+            background: rgba(0, 0, 0, .4);
+        }
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px white inset !important;
+        }
+        .hide {
+            display: none!important;
+        }
+        .gradient {
+            transition: .5s;
+            background: #3c8ddf;
+            background: -webkit-gradient(linear, 0 100%, 57.7% 100%, from(#2980b9), to(#33cccc));
+            background: -moz-linear-gradient(60deg, #2980b9, #33cccc);
+            background: -o-linear-gradient(60deg, #2980b9, #33cccc);
+            background: -ms-linear-gradient(60deg, #2980b9 0%, #33cccc 100%);
+        }
+        .icon {
+            max-width: 25px;
+            vertical-align: middle;
+        }
+        .disabled {
+            pointer-events: none;
+            cursor: default;
+        }
 
-    #container {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        padding: 0 50px;
-        width: 500px;
-        text-align: center;
-        height: 380px;
-        font-size: 30px;
-        color: #3397db
-    }
+        #mainContainer {
+            max-height: 480px;
+        }
+        .container {
+            min-width: 210px;
+            max-width: 275px;
+            max-height: 480px;
+            text-align: center;
+            padding: 0 50px;
+            color: #ffffff;
+            margin: auto;
+        }
+        .header {
+            position: relative;
+            overflow: hidden;
+            padding-bottom: 15px;
+        }
+        .header .logo {
+            max-width: 120px;
+            width: 35%;
+        }
+        .header .title {
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 6px;
+            padding-top: 15px;
+        }
 
-    #container input {
-        color: #3397db;
-        font-size: 16px;
-        font-weight: 500;
-        outline: 0;
-        border: solid #3397db 1px;
-        width: 352px;
-        height: 47px;
-        padding: 0 10px
-    }
+        .icon_input {
+            height: 53px;
+            background-color: #ffffff;
+            text-align: left;
+            margin-bottom: 15px;
+            padding: 0 8px;
+        }
 
-    #container .user {
-        margin-top: 66px
-    }
+        input {
+            width: calc(100% - 60px);
+            font-size: 16px;
+            text-align: center;
+            color: #666666;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            height: 50px;
+            line-height: 50px;
+        }
+        .errorTip {
+            position: absolute;
+            width: 100%;
+            background-color: #ec6941;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 0;
+            letter-spacing: 2px;
+            opacity: 0;
+            bottom: 15px;
+            pointer-events: none;
+        }
+        .errorTip.active {
+            animation: errorFloat 5s ease-in-out;
+        }
+        .logon {
+            margin-top: 10px;
+            margin-bottom: 15px;
+            padding: 16px;
+            color: #ffffff;
+            height: 21px;
+            border: 0;
+            border-radius: 4px;
+            opacity: .8;
+            cursor: pointer;
+        }
+        .logon:hover {
+            opacity: 1;
+        }
+        .logon img {
+            width: 21px;
+            height: 21px;
+        }
+        .copyright {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            color: #ffffff;
+            padding: 5px;
+            font-size: 12px;
+            text-align: center;
+            line-height: 20px;
+            background: rgba(0, 0, 0, .8);
+        }
 
-    #container .password {
-        margin-top: 24px
-    }
+        .pic_info.modal .container{
+            max-height: 510px;
+        }
+        @keyframes errorFloat {
+            0% { bottom: -40px; transform: scale(1, 1); opacity: 1;}
+            10% { bottom: 15px; transform: scale(1, 1); opacity: 1;}
+            90% { bottom: 15px; transform: scale(1, 1); opacity: 1;}
+            100% { bottom: 15px; transform: scale(1.1, 1.1);  opacity: 0; }
+        }
 
-    #container input[type=submit] {
-        font-size: 17px;
-        color: #fff;
-        width: 130px;
-        margin-top: 45px;
-        border: none;
-        border-radius: 12px;
-        background-color: #3397db;
-        cursor: pointer;
-        outline: 0
-    }
-
-    #container input[type=submit]:hover {
-        background-color: #44a8ec
-    }
-
-    #container .response {
-        margin-top: 20px;
-        color: red;
-        font-size: 12px
-    }</style>
+        @keyframes fade-in {
+            from {
+                margin-top: 30px;
+                opacity: 0;
+            }
+            to {
+                margin-top: 0;
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="container">
-    <div class="title">后 台 登 录</div>
-    <input placeholder="账户" type="text" class="user"><input placeholder="密码" type="password" class="password">
-    <div><input value="登 录" type="submit"></div>
-    <div class="response"></div>
+<div class="absolute center background"><div></div></div>
+<div id="mainContainer" class="absolute center">
+    <div class="container">
+        <div class="header">
+            <img class="logo" src="./pic/logo.png" alt="">
+            <div class="title">十佳教师评选</div>
+            <div class="errorTip">账号或密码错误</div>
+        </div>
+        <form class="content">
+            <div class="icon_input">
+                <img class="icon" src="./pic/icon/username_icon.png" alt="">
+                <input name="username" type="text" placeholder="用户名">
+            </div>
+            <div class="icon_input">
+                <img class="icon" src="./pic/icon/password_icon.png" alt="">
+                <input name="password" type="password" placeholder="密码">
+            </div>
+            <input type="hidden" name="PtButton" value="logon">
+            <div class="logon gradient">
+                <input type="submit" hidden class="hide">
+                <img src="./pic/icon/check.png" alt="">
+            </div>
+        </form>
+    </div>
 </div>
-</body>
-<script>$(function () {
-    localStorage.clear();
-    $(document).keyup(function (t) {
-        13 == t.keyCode && $("input[type=submit]").click()
-    }), $("input[type=submit]").on("click", function () {
-        var t = $(".user").val(), a = $(".password").val();
-        if (!t || !a)return void alert("用户名密码不能为空！");
-        var e = $("input[type=submit]");
-        e.val("请稍候"),
-        $.ajax({
-            method: "post",
-            url: "/common/login",
-            data: {userName: t, password: a},
-            success: function (a) {
-                if ("success" == a.status){
-                    localStorage.setItem("session",a.session.type);
-                    window.location.href='./voteResult.html';
-                }
-            },
-            error: function (t) {
-                400== t.status ? (e.attr("value", "登 录"), $(".response").html("登陆失败 请输入正确的用户名密码")) : (alert("连接超时 请稍后重试"), e.attr("value", "登 录"))
+<div class="copyright">&copy; 2017.Powered by RedHome Studio 红色家园</div>
+<script src="./js/jquery-2.0.0.min.js"></script>
+<script>
+    $(function () {
+        var $errorTip = $('.errorTip');
+        var $logon = $('.logon');
+
+        var warning = function (text) {
+            $errorTip.text(text).removeClass('active');
+            setTimeout(function () {
+                $errorTip.addClass('active');
+            }, 100);
+        };
+
+        $('form').submit(function () {
+            $logon.click();
+            return false;
+        });
+
+        $logon.on('click', function () {
+            var username = $('input[name=username]').val();
+            var password = $('input[name=password]').val();
+            if (!username || !password) {
+                return warning('账号或密码错误')
             }
-        })
+
+            var $this = $(this);
+            $this.addClass('disabled');
+            $.ajax({
+                url: '/common/login',
+                method: 'post',
+                data: {
+                    userName: username,
+                    password: password,
+                },
+                success: function () {
+                    window.location.href = './host.html'
+                },
+                error: function (err) {
+                    warning(err.responseJSON.msg)
+                },
+                complete: function () {
+                    $this.removeClass('disabled');
+                }
+            })
+        });
     })
-})</script>
+</script>
+</body>
 </html>
