@@ -97,6 +97,7 @@
                     //over
                     return;
                 }
+                $('.timeStart').css('pointer-events','none');
                 timeCount(data.time, data.duration, function () {
                 });
             },
@@ -113,13 +114,7 @@
                 method: "get",
                 url: "/admin/start?duration=" + duration,
                 success: function () {
-                    $.ajax({
-                        method: "get",
-                        url: "/admin/reset",
-                        success: function () {
-                            location.reload();
-                        }
-                    })
+                    location.reload();
                 },
                 error: function (data) {
                     alert(data.msg);

@@ -45,7 +45,6 @@ var timeLeft;
 
 function timeCount(timeStart, timeLeap, cb){
     var $timeLeft = $(".timeleft");
-
     var timeNow = new Date().getTime();
     var timeEnd = timeStart + 1000 * 60 * timeLeap;
     timeLeft = timeEnd - timeNow;
