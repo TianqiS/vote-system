@@ -12,8 +12,8 @@ router.get('/start', async ctx => {
     global.duration = _.pick(ctx.request.query, ['duration']).duration || 3;
     global.timeInterval = new Date().getTime();
     global.io.emit('startVote', {
-        time: global.timeInterval || 0,     //开始的时间戳
-        duration: global.duration  || 0
+        time: global.timeInterval,
+        duration: global.duration
     });
     ctx.body = {
         status: 'success',
@@ -24,13 +24,16 @@ router.get('/start', async ctx => {
  * 重置投票
  */
 router.get('/reset', async ctx => {
+    global.timeInterval = 0;
     await invitationCodeModule.reset();
     await voteNumberModule.reset();
+    global.io.emit('reset');
 
     ctx.body = {
         status: 'success',
         message: '清除成功'
     }
 });
+
 
 module.exports = router.routes();
