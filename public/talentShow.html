@@ -20,8 +20,7 @@
         padding: 30px;
     }
     .teacherBox:hover .shade {
-        height: 0;
-        width: 0;
+        opacity: 0;
     }
     .teacherBox .info {
         width: 75%;
@@ -77,9 +76,6 @@
 <script id="teacherContainer" type="application/xml">
     <div class="teacherBox">
         <img src="./pic/teacherLong/__teacher__.jpg"/>
-        <a class="absolute center link" href="./personInfo.html?id=__id__">
-            查看介绍
-        </a>
         <div class="absolute center shade">
             <div class="absolute center info">
                 <div class="id stress">__number__</div>
@@ -88,6 +84,9 @@
                 <div class="motto">"__motto__"</div>
             </div>
         </div>
+        <a class="absolute center link" href="./personInfo.html?id=__id__">
+            查看介绍
+        </a>
     </div>
 </script>
 
@@ -106,6 +105,6 @@
             });
             $container.append(str)
         });
-        $container.append('<div class="teacherBox"></div>')
+        $container.append('<div class="teacherBox"></div>');
     })
 </script>

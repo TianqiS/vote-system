@@ -10,9 +10,6 @@ html, body{
 img {
     max-width: 100%;
 }
-img:hover{
-    cursor: pointer;
-}
 a,a:hover,a:visited,a:link,a:active{
     text-decoration:none;
 }
