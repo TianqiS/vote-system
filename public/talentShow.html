@@ -3,176 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <title>2017杭电十佳教师评选-风采展示</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=0"/>
     <script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
     <script src="./js/teacherData.js" type="text/javascript"></script>
     <script src="./js/utils.js" type="text/javascript"></script>
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/bars.css">
     <link rel="stylesheet" href="./css/utils.css">
-
 </head>
 <style>
-    .talentShow .container .notice {
-        font-size: 13px;
-        letter-spacing: 3.5px;
-        margin: 30px 0;
-
+    .notice {
+        font-size: 14px;
+        letter-spacing: 2.4px;
+        color: #999999;
+        padding: 30px;
     }
-
-    .talentShow .container .votelist{
-        display: block;
+    .teacherBox:hover .shade {
+        height: 0;
+        width: 0;
     }
-    .talentShow .container .votelist .teacherBox {
-        width: 384px;
-        height: 240px;
-        margin: 15px 16px;
+    .teacherBox .info {
+        width: 75%;
+        height: 150px;
+        line-height: 32px;
     }
-
-    .talentShow .container .votelist .teacherBox .button {
-        display: none;
-        background: -webkit-gradient(linear, left top, left bottom, from(#2980b9), to(#33cccc));
-        line-height: 40px;
+    .teacherBox .link {
         width: 120px;
         height: 40px;
-        opacity: 0.8;
-        position: absolute;
-        margin: auto;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
+        line-height: 40px;
+        opacity: 0;
+        font-size: 12px;
         color: white;
-        font-size: 12px;
-        letter-spacing: 2px;
+        background-image: linear-gradient(to right, rgba(51, 204, 204, .8), rgba(41, 128, 185, .5));
+        transition: .8s;
     }
-
-
-    .talentShow .container .votelist .teacherBox:hover .button{
-        display:block;
+    .teacherBox:hover .link {
+        opacity: 1;
     }
-
-    .talentShow .container .votelist .teacherBox:hover .shade{
-        display: none;
+    .teacherBox .id, .teacherBox .name {
+        font-size: 18px;
     }
-
-
-        /*****************************************************************/
-    .teacherBox .info {
-        height: 140px;
-        width: 300px;
-        position: absolute;
-        margin: auto;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
+    .teacherBox .department, .teacherBox .motto {
+        font-size: 14px;
     }
-    .teacherBox .info .line1 {
-        font-size: 22px;
-        letter-spacing: 2px;
-    }
-
-    .teacherBox .info .line2 {
-        font-weight: bold;
-        font-size: 17px;
-        letter-spacing: 4px;
-        margin: 10px 0 15px 0;
-    }
-
-    .teacherBox .info .line3 {
-        font-size: 12px;
-        letter-spacing: 1px;
-    }
-
-    .teacherBox .info .line4 {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 12px;
-        letter-spacing: 2px;
-        margin: 15px auto 0 auto;
-    }
-
-    .teacherBox:hover .info {
-        display: none;
-    }
-/************************************************************************/
-    .talentShow .container .votelist + .stress {
-        font-size: 28px;
-        letter-spacing: 5px;
-        margin-top: 50px;
-    }
-
 </style>
 
-
-<body class="talentShow">
+<body>
 <div class="topbar">
-    <div class="topContainer">
-        <span class="logoL"> <img src="./pic/logo.png" alt=" "> </span>
-        <div>
-            <span class="topTitle">
-                <div class="active">风采展示</div>
-                <div class="underline"></div>
-            </span>
-            <span class="topTitle">
-            <div class=":active"><a href="./vote.html">为Ta投票</a></div>
-            <div class=":underline"></div>
-        </span>
+    <div class="topbarContainer">
+        <img src="./pic/logo.png" class="logo" alt=" ">
+        <div class="title active">
+            <div>风采展示</div>
+            <div class="underline"></div>
         </div>
+        <a class="title" href="./vote.html">
+            <div>为Ta投票</div>
+            <div class="underline"></div>
+        </a>
     </div>
 </div>
 <div class="container">
-    <div class="headerPic">
-        <div class="shade"></div>
-        <div class="title">
-            <div id="line1">杭 州 电 子 科 技 大 学 · 二 零 一 七</div>
-            <div id="line2">第八届“十佳教师”暨首届师德先进个人评选</div>
-        </div>
-    </div>
+    <img class="banner" src="./pic/banner_pc.jpg"/>
+    <img class="banner phone" src="./pic/banner_phone.jpg"/>
     <div class="notice">· 按姓名的拼音字母顺序排列 ·</div>
     <div class="votelist"></div>
-    <div class="stress">END</div>
+    <div class="end stress">END</div>
 </div>
-<div class="bottombar">@ 2017.Powered by RedHome Studio 红色家园</div>
+<div class="copyright">@ 2017.Powered by RedHome Studio 红色家园</div>
 </body>
 </html>
 
-
 <script id="teacherContainer" type="application/xml">
-    <div class="teacherBox" style="background-image:url('./pic/teacherLong/__teacher__.jpg')" id="__id__">
-        <div class="shade"></div>
-        <a class="button" href="./personInfo.html?id=__id__">
+    <div class="teacherBox">
+        <img src="./pic/teacherLong/__teacher__.jpg"/>
+        <a class="absolute center link" href="./personInfo.html?id=__id__">
             查看介绍
         </a>
-        <div class="info">
-            <div class="line1 stress">__number__</div>
-            <div class="line2">__teacher__</div>
-            <div class="line3">·__department__·</div>
-            <div class="line4">"__motto__"</div>
+        <div class="absolute center shade">
+            <div class="absolute center info">
+                <div class="id stress">__number__</div>
+                <div class="name">__teacher__</div>
+                <div class="department">·__department__·</div>
+                <div class="motto">"__motto__"</div>
+            </div>
         </div>
     </div>
 </script>
-
 
 <script>
     $(function () {
         //教师列表
         var teacherContainerCode = $('#teacherContainer').html();
+        var $container = $('.votelist');
         teacherInfo.forEach(function (e) {
             var str = teacherContainerCode.replaceAll({
-                '__department__':e.department,
+                '__department__': e.department,
                 '__teacher__': e.teacher,
                 '__id__': e.id,
                 '__number__': e.number,
-                '__motto__':e.motto
+                '__motto__': e.motto
             });
-            $('.votelist').append(str)
+            $container.append(str)
         });
-
-        //教师选择
-        $('.button').on("click",function () {
-            $(this).find("a").click();
-        })
+        $container.append('<div class="teacherBox"></div>')
     })
 </script>
