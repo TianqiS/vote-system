@@ -8,8 +8,8 @@ let voteNumberModule = require('../modules/voteNumber');
  * 开始投票
  * 参数：duration(分钟)
  */
-router.get('/start', async ctx => {
-    global.duration = _.pick(ctx.request.query, ['duration']).duration || 3;
+router.post('/start', async ctx => {
+    global.duration = _.pick(ctx.request.body, ['duration']).duration || 3;
     global.timeInterval = new Date().getTime();
     global.io.emit('startVote', {
         time: global.timeInterval,
