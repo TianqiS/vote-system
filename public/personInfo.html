@@ -12,81 +12,46 @@
 
 </head>
 <style>
-    .personInfo .nameRoller {
-        width: 900px;
-        margin: 80px auto 40px auto;
+    .container {
+        padding: 40px 20px 0 20px;
+        max-width: 600px;
+        margin: auto;
     }
-
-    .personInfo .nameRoller .line1 {
-        font-size: 30px;
+    .container .number, .container .teacher{
+        font-size: 26px;
         letter-spacing: 3px;
-    }
-
-    .personInfo .nameRoller .line2 {
-        letter-spacing: 3px;
-        margin-top: 15px;
-        font-size: 30px;
         font-weight: bolder;
         color: #555;
+        line-height: 42px;
     }
-
-    .personInfo .pic {
-        background-size: cover;
+    .container .pic {
         border-radius: 10px;
-        width: 700px;
-        height: 400px;
-        margin: 40px auto 40px auto;
+        margin: 20px 0;
     }
-
-    .personInfo .intro {
-        text-align: left;
-        width: 700px;
-        margin: 40px auto 190px auto;
-    }
-
-
-    .personInfo .intro .line1{
-        text-align: center;
-        margin: 0 auto 20px auto;
-        font-size: 14px;
-    }
-
-    .personInfo .intro .line2{
-        vertical-align: middle;
-        text-align: center;
-        font-family: 方正粗宋简体;
-        color: #999;
-        margin: 0 auto 20px auto;
-        font-size: 50px;
-
-    }
-    .personInfo .intro .line2 span{
-        line-height: 35px;
-        vertical-align: top;
-        font-family: 微软雅黑;
-        margin-top:0;
-
-        margin-bottom: 10px;
-        font-size: 14px;
-    }
-
-
-    .personInfo .intro .line3{
-        text-align: center;
-        margin: 30px auto 30px auto;
-        font-weight: bolder;
+    .container .bigFont {
         font-size: 30px;
-        color: #555;
+        font-family: 方正粗宋简体;
+        margin-bottom: 14px;
     }
-    .personInfo .intro .line4{
-       white-space: pre-wrap;
+    .container .smallFont {
+        line-height: 24px;
+        vertical-align: top;
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+    .container .tip {
+        font-size: 26px;
+        font-weight: bold;
+        color: #555555;
+        margin: 30px 0 25px 0;
+    }
+    .container .detail {
+        text-align: left;
         line-height: 30px;
     }
-
 </style>
 
-
-<body class="personInfo">
+<body>
 <div class="topbar">
     <div class="topbar">
         <div class="topbarContainer">
@@ -102,34 +67,29 @@
         </div>
     </div>
 </div>
-<div class="nameRoller">
-    <div class="line1 stress"></div>
-    <div class="line2"></div>
+<div class="container">
+    <div class="number stress"></div>
+    <div class="teacher"></div>
+    <img class="pic" src="" alt="">
+    <div class="smallFont">· <span class="smallFont department"></span> ·</div>
+    <div class="bigFont">“ <span class="smallFont motto"></span> ”</div>
+    <div class="tip">个人事迹</div>
+    <div class="detail"></div>
+    <div class="end stress">END</div>
 </div>
-<div class="pic"></div>
-</di>
-<div class="intro">
-    <div class="line1">· <span></span> ·</div>
-    <div class="line2">“ <span></span> ”</div>
-    <div class="line3">个人事迹</div>
-    <div class="line4"></div>
-</div>
-
-<div class="bottombar">@ 2017.Powered by RedHome Studio</div>
+<div class="copyright">@ 2017.Powered by RedHome Studio</div>
 </body>
 </html>
 
 
 <script>
     $(function () {
-        var i=getSearchObject().id; //老师编号
-        var info=teacherInfo[i-1]
-        $('.nameRoller .line1').html(info.number);
-        $('.nameRoller .line2').html(info.teacher);
-        $('.pic').css("background-image",'url("./pic/teacherLong/'+info.teacher+'.jpg")');
-        $('.intro .line1 span').html(info.department);
-        $('.intro .line2 span').html(info.motto);
-        $('.intro .line4').html(info.detail);
-
+        var i= getSearchObject().id;
+        var info= teacherInfo[i-1];
+        for(var k in info) {
+            var v = info[k];
+            $('.' + k).html(v);
+        }
+        $('.pic').attr('src', './pic/teacherLong/'+info.teacher+'.jpg');
     })
 </script>

@@ -35,9 +35,11 @@ a{
     background: -webkit-gradient(linear,left top,left bottom,from(#2980b9),to(#33cccc));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+.end.stress {
     margin: 30px 0;
 }
-
 @keyframes sideFadeIn {
     from {
         opacity: 0;
