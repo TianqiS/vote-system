@@ -73,3 +73,25 @@ function time2txt(timeleft){
 function num2txt(number){
     return number / 10 >= 1 ? number : '0' + number;
 }
+
+
+function sortOut(data){
+    //获取排序队列
+    var voteResult = [];
+    data.result.forEach(
+        function (e) {
+            voteResult.push(e);
+        }
+    )
+    function sortVote(b,a){
+        if(a.number_of_votes==b.number_of_votes){
+            if(a.expert_number==b.expert_number){
+                return b.id-a.id
+            }
+            return a.expert_number-b.expert_number
+        }
+        else return a.number_of_votes-b.number_of_votes
+    }
+    voteResult=voteResult.sort(sortVote);
+    return voteResult;
+}

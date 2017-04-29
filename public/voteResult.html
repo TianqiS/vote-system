@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>2017杭电十佳教师评选-投票结果</title>
     <script src="./js/utils.js" type="text/javascript"></script>
+    <script src="./js/teacherData.js" type="text/javascript"></script>
     <script src="./js/echarts.min.js" type="text/javascript"></script>
     <script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="./css/common.css">
@@ -78,17 +79,17 @@
     $(function () {
 
         //检查是否有权限
-        var session=localStorage.getItem("session");
-        if(session!='admin'){
+        var session = localStorage.getItem("session");
+        if (session != 'admin') {
             alert("请先登录");
-            window.location.href='./login.html';
+            window.location.href = './login.html';
         }
 
 
         $.ajax({
-            method:"get",
-            url:"/common/time",
-            success:function (data) {
+            method: "get",
+            url: "/common/time",
+            success: function (data) {
                 if (data.duration == 0 || data.time == 0) {
                     return;
                 }
@@ -99,44 +100,43 @@
                 timeCount(data.time, data.duration, function () {
                 });
             },
-            error:function () {
+            error: function () {
                 alert("服务器开小差了哦~");
             }
         })
 
         //设定时长
-        var duration=3;
-        $('.timeleft').html("00:"+num2txt(duration)+":00");
-        $('.timeStart').on("click",function(){
+        var duration = 1;
+        $('.timeleft').html("00:" + num2txt(duration) + ":00");
+        $('.timeStart').on("click", function () {
             $.ajax({
-                method:"get",
-                url:"/admin/start?duration="+duration,
-                success:function(){
+                method: "get",
+                url: "/admin/start?duration=" + duration,
+                success: function () {
                     $.ajax({
-                        method:"get",
-                        url:"/admin/reset",
-                        success:function () {
+                        method: "get",
+                        url: "/admin/reset",
+                        success: function () {
                             location.reload();
                         }
                     })
                 },
-                error:function (data) {
+                error: function (data) {
                     alert(data.msg);
                 }
             })
         })
 
 
-
-        $('.timeReset').on("click",function() {
+        $('.timeReset').on("click", function () {
             $.ajax({
-                method:"get",
-                url:"/admin/start?duration=0",
-                success:function () {
+                method: "get",
+                url: "/admin/start?duration=0",
+                success: function () {
                     $.ajax({
-                        method:"get",
-                        url:"/admin/reset",
-                        success:function () {
+                        method: "get",
+                        url: "/admin/reset",
+                        success: function () {
                             location.reload();
                         }
                     })
@@ -145,45 +145,50 @@
         })
 
 
-
-
     });
 
 </script>
 <script name="map_var">
+    var voteResult = [];
+    $.ajax({
+        async:false,
+        method: "get",
+        url: "/common/getResult",
+        success: function (data) {
+            voteResult = sortOut(data);
+        }
+    });
     var map = echarts.init(document.getElementById("map"));
     var show10, ticket;            //checkbox监听
     var tchrList, data;             //中间容器
-    var tchrAll = [
-        "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛",
-        "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛",
-        "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛",
-        "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛",
-        "王\n尼\n玛"
-    ];
-    var tchr10 = [
-        "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛",
-        "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛", "王\n尼\n玛"
-    ];
-    var dataAll = [
-        100, 57, 44, 50, 60,
-        40, 20, 24, 50, 60,
-        90, 149, 160, 122, 133,
-        134, 198, 123, 125, 120,
-        120
-    ];
-    var data10 = [
-        100, 57, 44, 50, 60,
-        40, 20, 24, 50, 60
-    ];
+    var tchrAll = [];
+    var tchr10 = [];
+    var dataAll=[];
+    var data10=[];
+    function orderById(a,b) {
+        return a-b;
+    }
+    teacherInfo.forEach(function (e) {
+        tchrAll.push(e.teacher);
+        dataAll.push((voteResult.sort(orderById))[e.id-1].number_of_votes)
+    });
+
+    voteResult.forEach(function (e,i) {
+        console.log(e);
+        if (i>9)return;
+        tchr10.push(teacherInfo[e.id-1].teacher);
+        data10.push(e.number_of_votes);
+    });
+
     function num(a) {
         switch (a) {
             case true:
                 return 10;
             default:
-                return 21;
+                return 19;
         }
     }
+
 
 </script>
 
@@ -248,6 +253,7 @@
                     offset: 10                              //向下偏移量
                 }],
             yAxis: {
+                max:150,
                 axisLine: {
                     show: false
                 },

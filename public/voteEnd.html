@@ -52,67 +52,73 @@
         margin-top: 15px;
         letter-spacing: 4px;
     }
-    .voteEnd .container .notice{
+
+    .voteEnd .container .notice {
 
         margin: 36px auto;
         letter-spacing: 3px;
         font-size: 14px;
     }
 
-    .voteEnd .container .voteEndList{
+    .voteEnd .container .voteEndList {
         width: 100%;
         max-width: 1260px;
         text-align: left;
-        margin:30px auto 50px auto;
+        margin: 30px auto 50px auto;
         white-space: nowrap;
     }
 
-    .voteEnd .container .voteEndList .teacherBox{
-        margin:25px auto;
+    .voteEnd .container .voteEndList .teacherBox {
+        margin: 25px auto;
         width: 766px;
         height: 80px;
         border-radius: 10px;
         background-color: #fcfcfc;
         box-shadow: 0 0 6px 0 #e0e0e0;
     }
-    .voteEnd .container .voteEndList .teacherBox .head{
-        margin:10px 20px;
+
+    .voteEnd .container .voteEndList .teacherBox .head {
+        margin: 10px 20px;
         display: inline-block;
         height: 60px;
         width: 60px;
         overflow: hidden;
-        border-radius:30px;
+        border-radius: 30px;
     }
-    .voteEnd .container .voteEndList .teacherBox .head img{
+
+    .voteEnd .container .voteEndList .teacherBox .head img {
         width: 100%;
         height: 100%;
     }
-    .voteEnd .container .voteEndList .teacherBox .info{
-        width:50px;
+
+    .voteEnd .container .voteEndList .teacherBox .info {
+        width: 50px;
         height: 50px;
         line-height: 30px;
         margin: 12px 0;
         display: inline-block;
         vertical-align: top;
     }
-    .voteEnd .container .voteEndList .teacherBox .info .line1{
+
+    .voteEnd .container .voteEndList .teacherBox .info .line1 {
         font-size: 20px;
         font-weight: bold;
     }
-    .voteEnd .container .voteEndList .teacherBox .ticket{
+
+    .voteEnd .container .voteEndList .teacherBox .ticket {
         float: right;
         margin-right: 40px;
         line-height: 80px;
     }
-    .voteEnd .container .voteEndList .teacherBox .ticket .stress{
+
+    .voteEnd .container .voteEndList .teacherBox .ticket .stress {
         letter-spacing: 0;
-        font-size:22px;
+        font-size: 22px;
     }
 
-
     /******************************************************************/
-    .voteEnd .container .stress{
-        font-size:21px;
+    .voteEnd .container .stress {
+        font-size: 21px;
         letter-spacing: 5px;
     }
 
@@ -122,7 +128,7 @@
 <div class="topbar">
     <div class="topbarContainer">
         <img src="./pic/logo.png" class="logo" alt=" ">
-        <a class="title "  href="./talentShow.html">
+        <a class="title " href="./talentShow.html">
             <div>风采展示</div>
             <div class="underline"></div>
         </a>
@@ -159,58 +165,69 @@
 
 <script id="teacherContainer" type="application/xml">
     <div class="teacherBox" id="__id__">
-        <div class="head"><img src="./pic/teacher/__teacher__.jpg" alt=""/></div>
+        <div class="head">
+            <img src="./pic/teacher/__teacher__.jpg" alt=""/>
+        </div>
         <div class="info">
             <div class="line1">__teacher__</div>
             <div>__department__</div>
         </div>
-        <div class="ticket"><span class="stress">__ticket__</span> /票</div>
+        <div class="ticket">
+            <span class="stress">__ticket__</span>
+            /票
+        </div>
     </div>
 </script>
 
 <script>
     $(function () {
         $.ajax({
-            method:"get",
-            url:"/common/time",
-            success:function (data) {
+            method: "get",
+            url: "/common/time",
+            success: function (data) {
                 if (data.duration == 0 || data.time == 0) {
-                    localStorage.setItem("voteStatus",'unbegin');
-                    window.location.href="./vote.html";
+                    localStorage.setItem("voteStatus", 'unbegin');
+                    window.location.href = "./vote.html";
                     return;
                 }
                 if (data.time + data.duration * 60 * 1000 < new Date().getTime()) {
                     return;
                 }
                 localStorage.removeItem("voteStatus");
-                window.location.href="./vote.html";
+                window.location.href = "./vote.html";
             },
-            error:function () {
+            error: function () {
                 alert("服务器开小差了哦~");
             }
         })
 
         $.ajax({
-            method:"get",
-            url:"/common/getResult",
-            success:function (data) {
+            method: "get",
+            url: "/common/getResult",
+            success: function (data) {
                 console.log(data);
+                var voteResult=sortOut(data);
+                console.log(voteResult);
+                //教师列表创建
+                var teacherContainerCode = $('#teacherContainer').html();
+                voteResult.forEach(function (e,i) {
+                    console.log(e);
+                    if (i>9)return;
+                    var str = teacherContainerCode.replaceAll({
+                        '__department__': teacherInfo[e.id-1].department,
+                        '__teacher__': teacherInfo[e.id-1].teacher,
+                        '__id__': teacherInfo[e.id-1].id,
+                        '__ticket__':e.number_of_votes
+                    });
+                    $('.voteEndList').append(str)
+                });
+
             },
-            error:function () {
+            error: function () {
 
             }
         })
 
-        //教师列表
-        var teacherContainerCode = $('#teacherContainer').html();
-        teacherInfo.forEach(function (e) {
-            var str = teacherContainerCode.replaceAll({
-                '__department__': e.department,
-                '__teacher__': e.teacher,
-                '__id__': e.id
-            });
-            $('.voteEndList').append(str)
-        });
 
         //显示列表
 
