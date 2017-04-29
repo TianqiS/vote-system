@@ -6,13 +6,15 @@ exports.vote = function (info) {
     return db.transaction(function (trx) {
         return co(function *() {
             //增加投票数目
-            let increment = {
-                'number_of_votes': voteNumberModel.raw(trx, 'number_of_votes + 1')
-            };
+            let increment = {};
+
             if((info.code + '')[0] == 1) {
                 increment['expert_number'] = voteNumberModel.raw(trx, 'expert_number + 1');
+                increment['number_of_votes'] = voteNumberModel.raw(trx, 'number_of_votes + 3');
+
             } else {
                 increment['ordinary_number'] = voteNumberModel.raw(trx, 'ordinary_number + 1');
+                increment['number_of_votes'] = voteNumberModel.raw(trx, 'number_of_votes + 1')
             }
              yield voteNumberModel.vote(trx, info.teacherId, increment);
             //更新邀请码状态
