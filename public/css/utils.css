@@ -11,13 +11,6 @@
     display: none;
 }
 
-.timeleft {
-    display: inline-block;
-    width: 150px;
-    font-weight: bold;
-    color: #ff6666;
-}
-
 /**************************投票框****************************************/
 .votelist {
     width: 100%;

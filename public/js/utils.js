@@ -9,7 +9,7 @@ String.prototype.replaceAll = function (obj) {
         str = str.replace(new RegExp(k, 'g'), v)
     }
     return str;
-}
+};
 
 // 获取url search 字段
 function getSearchObject() {
@@ -23,7 +23,6 @@ function getSearchObject() {
     return obj;
 }
 
-
 // 设置url search
 function setSearchObject(obj) {
     var array = [];
@@ -32,43 +31,34 @@ function setSearchObject(obj) {
     }
     location.search = '?' + array.join('&');
 }
-//只允许输入数字
-function onlyNum()
-{
-    if(!((event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105)||(event.keyCode==8)))
-        event.returnValue=false;
-}
 
-var timeLeft;
-//获取剩余时间,返回文本00:00:00
-//timeLeap为设定分钟
+/**
+ * 开始计时
+ * $container: 时间字符串注入容器
+ * surplus 剩余时间
+ * cb 计时完成时的回调
+ */
+function startTime($container, surplus, cb){
 
-function timeCount(timeStart, timeLeap, cb){
-    var $timeLeft = $(".timeleft");
-    var timeNow = new Date().getTime();
-    var timeEnd = timeStart + 1000 * 60 * timeLeap;
-    timeLeft = timeEnd - timeNow;
-
-    $timeLeft.html(time2txt(timeLeft));
+    $container.text( timeFormat(surplus) );
     var i = setInterval(function(){
-        timeLeft-=1000;
-        if (timeLeft < 999) {
+        surplus -= 1000;
+        if (surplus < 1000) {
             clearInterval(i);
             cb();
         }
-        $timeLeft.html(time2txt(timeLeft));
-    },1000);
-
+        $container.text(timeFormat(surplus));
+    }, 1000);
 }
 
-function time2txt(timeleft){
-    var a=new Date(timeleft);
-    var sec=a.getSeconds();
-    var min=a.getMinutes();
-    var hour=a.getHours()-8;
+// 将剩余毫秒数转换成 hh: mm: ss 的字符串形式
+function timeFormat(time){
+    var d=new Date(time);
+    var sec = d.getSeconds();
+    var min = d.getMinutes();
+    var hour = d.getHours() - 8;
     return num2txt(hour)+":"+num2txt(min)+":"+num2txt(sec);
 }
-
 function num2txt(number){
     return number / 10 >= 1 ? number : '0' + number;
 }

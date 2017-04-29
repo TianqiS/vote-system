@@ -73,7 +73,7 @@
         <div class="absolute center shade">
             <div class="absolute center info">
                 <div class="id stress">__number__</div>
-                <div class="name">__teacher__</div>
+                <div class="name">__name__</div>
                 <div class="department">·__department__·</div>
                 <div class="motto">"__motto__"</div>
             </div>
@@ -94,7 +94,7 @@
         teacherInfo.forEach(function (e) {
             var str = teacherContainerCode.replaceAll({
                 '__department__': e.department,
-                '__teacher__': e.teacher,
+                '__name__': e.name,
                 '__id__': e.id,
                 '__number__': e.number,
                 '__motto__': e.motto

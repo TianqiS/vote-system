@@ -8,46 +8,49 @@
     <link rel="stylesheet" href="./css/bars.css">
 </head>
 <style>
-    .topContainer .topTitle {
+    .topbar {
         color: white;
+        line-height: 40px;
     }
-
-    /***********************************************/
-    .voteResult .timebar {
-        margin-top: 65px;
+    .timebar {
+        height: 50px;
+        line-height: 50px;
+        text-align: left;
+        max-width: 1166px;
+        border-radius: 8px;
+        background-color: #fcfcfc;
+        box-shadow: 0 0 6px 0 #e0e0e0;
     }
-
-    .voteResult .timebar img {
-        margin-right: 2%;
+    .timebar > * {
+        vertical-align: middle;
+        margin-left: 30px;
+        display: inline-block;
+    }
+    .timebar .time {
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 3.6px;
+        color: #ff6666;
+    }
+    .timebar img {
         width: 20px;
-        display: inline-block;
+        cursor: pointer;
     }
-
-    .voteResult .timebar .checkbox {
-        display: inline-block;
-        margin-left: 40%;
-    }
-
-    .voteResult .timebar .checkbox span {
-        margin: 20px;
+    .timebar .checkbox {
+        float: right;
+        margin-right: 30px;
+        font-size: 14px;
         color: #999999;
     }
-
-    .voteResult .timebar .timeleft {
-        margin-right: 4%;
-        font-size: 22px;
-        letter-spacing: 4px;
+    .timebar .checkbox input {
+        vertical-align: text-top;
+        margin: 2px 4px 0 30px;
     }
-
-    /***********************************************/
-
-    .voteResult #map {
+    #map {
         margin-top: 25px;
         width: 100%;
         height: 720px;
     }
-
-
 </style>
 <body class="voteResult">
 <div class="topbar">
@@ -58,37 +61,61 @@
         </div>
     </div>
 </div>
-<div class="timebar">
-    <div class="timeleft">00:00:00</div>
-    <img src="./pic/icon/start.png" alt=" " title="计时开始" class="timeStart">
-    <img src="./pic/icon/reset.png" alt=" " title="重新计时" class="timeReset">
-    <div class="checkbox">
-        <span><input type="checkbox" id="show10">显示前十名</span>
-        <span><input type="checkbox" id="showTicket">显示具体票数</span>
+<div class="container">
+    <div class="timebar">
+        <div class="time">00:00:00</div>
+        <img src="./pic/icon/start.png" alt=" " title="计时开始" class="timeStart">
+        <img src="./pic/icon/reset.png" alt=" " title="重新计时" class="timeReset">
+        <div class="checkbox">
+            <input type="checkbox" id="showFirstTen"><label for="showFirstTen">显示前十名</label>
+            <input type="checkbox" id="showTicket"><label for="showTicket">显示具体票数</label>
+        </div>
     </div>
+    <div id="map"></div>
 </div>
-<div id="map"></div>
 <div class="copyright">&copy;  2017.Powered by RedHome Studio 红色家园</div>
 <script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
 <script src="./js/utils.js" type="text/javascript"></script>
 <script src="./js/teacherData.js" type="text/javascript"></script>
 <script src="./js/echarts.min.js" type="text/javascript"></script>
+<script src="./js/echartOption.js" type="text/javascript"></script>
 <script>
     $(function () {
+        var $timeContainer = $('.timebar .time');
+        // init time bar
         $.ajax({
             method: 'get',
             url: '/common/time',
             success: function (data) {
                 //check
-                startTime(data.time, data.duration)
+                if (!data.time) {
+                    $timeContainer.text("00:03:00");
+                    return
+                }
+                var timeNow = new Date().getTime();
+                var timeEnd = timeStart + 1000 * 60 * duration;
+                var surplus = timeEnd - timeNow;
+                if (surplus < 0) {
+                    $timeContainer.text("00:03:00");
+                    return
+                }
+                startTime($timeContainer, surplus, function () {
+                    // over
+                })
+            },
+            error: function () {
+                alert('网络请求失败，请稍后重试');
             }
         });
         $('.timeStart').on('click', function () {
+            $(this).addClass('disabled');
             $.ajax({
                 method: "get",
                 url: "/admin/start",
                 success: function () {
-                    startTime(new Date().getTime(), 3)
+                    startTime($timeContainer, 3 * 60 * 1000, function () {
+                        // over
+                    })
                 },
                 error: function (data) {
                     alert(data.responseJSON.msg);
@@ -98,273 +125,200 @@
         $('.timeReset').on('click', function () {
             $.ajax({
                 method: "get",
-                url: "/admin/start",
+                url: "/admin/reset",
                 success: function () {
-                    resetTime();
+                    location.reload()
                 },
                 error: function (data) {
                     alert(data.responseJSON.msg);
                 }
             })
-        })
-
+        });
+        $('#showFirstTen').on('click');
+        // echart
+        var map = echarts.init(document.getElementById("map"));
+        map.setOption(echartOption)
     })
 </script>
 </body>
 </html>
-<!--<script>-->
-    <!--$(function () {-->
-
-        <!--//检查是否有权限-->
-        <!--var session = localStorage.getItem("session");-->
-        <!--if (session != 'admin') {-->
-            <!--alert("请先登录");-->
-            <!--window.location.href = './login.html';-->
-        <!--}-->
-
-
-        <!--$.ajax({-->
-            <!--method: "get",-->
-            <!--url: "/common/time",-->
-            <!--success: function (data) {-->
-                <!--if (data.duration == 0 || data.time == 0) {-->
-                    <!--return;-->
-                <!--}-->
-                <!--if (data.time + data.duration * 60 * 1000 < new Date().getTime()) {-->
-                    <!--//over-->
-                    <!--return;-->
-                <!--}-->
-                <!--$('.timeStart').css('pointer-events','none');-->
-                <!--timeCount(data.time, data.duration, function () {-->
-                <!--});-->
-            <!--},-->
-            <!--error: function () {-->
-                <!--alert("服务器开小差了哦~");-->
-            <!--}-->
-        <!--})-->
-
-        <!--//设定时长-->
-        <!--var duration = 1;-->
-        <!--$('.timeleft').html("00:" + num2txt(duration) + ":00");-->
-        <!--$('.timeStart').on("click", function () {-->
-            <!--$.ajax({-->
-                <!--method: "get",-->
-                <!--url: "/admin/start?duration=" + duration,-->
-                <!--success: function () {-->
-                    <!--location.reload();-->
-                <!--},-->
-                <!--error: function (data) {-->
-                    <!--alert(data.msg);-->
-                <!--}-->
-            <!--})-->
-        <!--})-->
+<script name="map_var">
+//    var voteResult = [];
+//    $.ajax({
+//        async:false,
+//        method: "get",
+//        url: "/common/getResult",
+//        success: function (data) {
+//            voteResult = sortOut(data);
+//            map.setOption(option);
+//        }
+//    });
+//    var map = echarts.init(document.getElementById("map"));
+//    var show10, ticket;            //checkbox监听
+//    var tchrList, data;             //中间容器
+//    var tchrAll = [];
+//    var tchr10 = [];
+//    var dataAll=[];
+//    var data10=[];
+//    function orderById(a,b) {
+//        return a-b;
+//    }
+//    teacherInfo.forEach(function (e) {
+//        tchrAll.push(e.teacher);
+//        dataAll.push((voteResult.sort(orderById))[e.id-1].number_of_votes)
+//    });
+//
+//    voteResult.forEach(function (e,i) {
+//        console.log(e);
+//        if (i>9)return;
+//        tchr10.push(teacherInfo[e.id-1].teacher);
+//        data10.push(e.number_of_votes);
+//    });
 
 
-        <!--$('.timeReset').on("click", function () {-->
-            <!--$.ajax({-->
-                <!--method: "get",-->
-                <!--url: "/admin/start?duration=0",-->
-                <!--success: function () {-->
-                    <!--$.ajax({-->
-                        <!--method: "get",-->
-                        <!--url: "/admin/reset",-->
-                        <!--success: function () {-->
-                            <!--location.reload();-->
-                        <!--}-->
-                    <!--})-->
-                <!--}-->
-            <!--})-->
-        <!--})-->
-
-
-    <!--});-->
-
-<!--</script>-->
-<!--<script name="map_var">-->
-    <!--var voteResult = [];-->
-    <!--$.ajax({-->
-        <!--async:false,-->
-        <!--method: "get",-->
-        <!--url: "/common/getResult",-->
-        <!--success: function (data) {-->
-            <!--voteResult = sortOut(data);-->
-            <!--map.setOption(option);-->
-        <!--}-->
-    <!--});-->
-    <!--var map = echarts.init(document.getElementById("map"));-->
-    <!--var show10, ticket;            //checkbox监听-->
-    <!--var tchrList, data;             //中间容器-->
-    <!--var tchrAll = [];-->
-    <!--var tchr10 = [];-->
-    <!--var dataAll=[];-->
-    <!--var data10=[];-->
-    <!--function orderById(a,b) {-->
-        <!--return a-b;-->
-    <!--}-->
-    <!--teacherInfo.forEach(function (e) {-->
-        <!--tchrAll.push(e.teacher);-->
-        <!--dataAll.push((voteResult.sort(orderById))[e.id-1].number_of_votes)-->
-    <!--});-->
-
-    <!--voteResult.forEach(function (e,i) {-->
-        <!--console.log(e);-->
-        <!--if (i>9)return;-->
-        <!--tchr10.push(teacherInfo[e.id-1].teacher);-->
-        <!--data10.push(e.number_of_votes);-->
-    <!--});-->
-
-    <!--function num(a) {-->
-        <!--switch (a) {-->
-            <!--case true:-->
-                <!--return 10;-->
-            <!--default:-->
-                <!--return 19;-->
-        <!--}-->
-    <!--}-->
-
-    <!--//条形图-->
-    <!--var option;-->
-    <!--function makemap() {-->
-        <!--show10 = $("#show10").prop("checked");-->
-        <!--ticket = $("#showTicket").prop("checked");-->
-        <!--tchrList = (show10 == true) ? tchr10 : tchrAll;-->
-        <!--data = (show10 == true) ? data10 : dataAll;-->
-        <!--window.data = data;-->
-        <!--option = {-->
-            <!--xAxis: [-->
-                <!--//条形图-->
-                <!--{-->
-                    <!--data: function () {-->
-                        <!--var list = [];-->
-                        <!--for (var i = 1; i <= num(show10); i++) {-->
-                            <!--list.push(i);-->
-                        <!--}-->
-                        <!--return list;-->
-                    <!--}(),-->
-                    <!--axisLabel: {                            //坐标对象-->
-                        <!--inside: true,-->
-                        <!--textStyle: {-->
-                            <!--fontSize: 14,-->
-                            <!--color: '#fff'-->
-                        <!--}-->
-                    <!--},-->
-                    <!--axisTick: {-->
-                        <!--show: false                         //坐标刻度-->
-                    <!--},-->
-                    <!--axisLine: {-->
-                        <!--show: false                         //坐标轴显示-->
-                    <!--},-->
-                    <!--z: 10                                   //视深-->
-                <!--},-->
-                <!--// 教师表-->
-                <!--{-->
-                    <!--position: "bottom",-->
-                    <!--data: tchrList,-->
-                    <!--axisLabel: {                            //坐标对象-->
-                        <!--show: true,-->
-                        <!--textStyle: {-->
-                            <!--color: "#666666",-->
-                            <!--fontSize: 13-->
-                        <!--}-->
-                    <!--},-->
-                    <!--splitNumber: 4,-->
-                    <!--splitLine: {-->
-                        <!--lineStyle: {-->
-                            <!--type: "dashed"-->
-                        <!--}-->
-                    <!--},-->
-                    <!--axisTick: {-->
-                        <!--show: false                         //坐标刻度-->
-                    <!--},-->
-                    <!--axisLine: {-->
-                        <!--show: false                         //坐标轴显示-->
-                    <!--},-->
-                    <!--offset: 10                              //向下偏移量-->
-                <!--}],-->
-            <!--yAxis: {-->
-                <!--max:150,-->
-                <!--axisLine: {-->
-                    <!--show: false-->
-                <!--},-->
-                <!--axisTick: {-->
-                    <!--show: false-->
-                <!--},-->
-                <!--splitNumber: 4,-->
-                <!--splitLine: {-->
-                    <!--lineStyle: {-->
-                        <!--type: "dashed"-->
-                    <!--}-->
-                <!--},-->
-                <!--axisLabel: {-->
-                    <!--show: false,-->
-                    <!--textStyle: {-->
-                        <!--color: '#999'-->
-                    <!--}-->
-                <!--}-->
-            <!--},-->
-            <!--dataZoom: [-->
-                <!--{-->
-                    <!--type: 'inside'-->
-                <!--}-->
-            <!--],-->
-            <!--series: [-->
-                <!--{-->
-                    <!--data: data,-->
-                    <!--type: "bar",-->
-                    <!--label: {-->
-                        <!--normal: {-->
-                            <!--position: "top",-->
-                            <!--show: function () {-->
-                                <!--if (ticket == true) {-->
-                                    <!--return true;-->
-                                <!--}-->
-                                <!--else {-->
-                                    <!--return false;-->
-                                <!--}-->
-                            <!--}(),-->
-                            <!--textStyle: {-->
-                                <!--color: "red",-->
-                                <!--fontSize: 15-->
-                            <!--}-->
-                        <!--}-->
-                    <!--}-->
-                <!--},-->
-                <!--{-->
-                    <!--type: 'bar',-->
-                    <!--barGap: '-100%',-->
-                    <!--barCategoryGap: '40%',-->
-                    <!--animation: false-->
-                <!--},-->
-                <!--{-->
-                    <!--type: 'bar',-->
-                    <!--itemStyle: {-->
-                        <!--normal: {-->
-                            <!--color: new echarts.graphic.LinearGradient(-->
-                                    <!--0, 0, 0, 1,-->
-                                    <!--[-->
-                                        <!--{offset: 0, color: '#33cccc'},-->
-                                        <!--{offset: 1, color: '#2980b9'}-->
-                                    <!--]-->
-                            <!--)-->
-                        <!--}-->
-                    <!--},-->
-                    <!--data: data-->
-                <!--}-->
-            <!--]-->
-        <!--};-->
-    <!--}-->
-    <!--makemap();-->
-    <!--map.setOption(option);-->
-<!--</script>-->
-<!--<script name="show10">-->
-    <!--$("#show10").on("click", function () {-->
-        <!--makemap();-->
-        <!--map.setOption(option);-->
-    <!--})-->
-<!--</script>-->
-<!--<script name="showTicket">-->
-    <!--$("#showTicket").on("click", function () {-->
-        <!--makemap();-->
-        <!--map.setOption(option);-->
-    <!--})-->
-<!--</script>-->
+    //条形图
+//    var option;
+//    function makemap() {
+//        show10 = $("#show10").prop("checked");
+//        ticket = $("#showTicket").prop("checked");
+//        tchrList = (show10 == true) ? tchr10 : tchrAll;
+//        data = (show10 == true) ? data10 : dataAll;
+//        window.data = data;
+//        option = {
+//            xAxis: [
+//                //条形图
+//                {
+//                    data: function () {
+//                        var list = [];
+//                        for (var i = 1; i <= num(show10); i++) {
+//                            list.push(i);
+//                        }
+//                        return list;
+//                    }(),
+//                    axisLabel: {                            //坐标对象
+//                        inside: true,
+//                        textStyle: {
+//                            fontSize: 14,
+//                            color: '#fff'
+//                        }
+//                    },
+//                    axisTick: {
+//                        show: false                         //坐标刻度
+//                    },
+//                    axisLine: {
+//                        show: false                         //坐标轴显示
+//                    },
+//                    z: 10                                   //视深
+//                },
+//                // 教师表
+//                {
+//                    position: "bottom",
+//                    data: tchrList,
+//                    axisLabel: {                            //坐标对象
+//                        show: true,
+//                        textStyle: {
+//                            color: "#666666",
+//                            fontSize: 13
+//                        }
+//                    },
+//                    splitNumber: 4,
+//                    splitLine: {
+//                        lineStyle: {
+//                            type: "dashed"
+//                        }
+//                    },
+//                    axisTick: {
+//                        show: false                         //坐标刻度
+//                    },
+//                    axisLine: {
+//                        show: false                         //坐标轴显示
+//                    },
+//                    offset: 10                              //向下偏移量
+//                }],
+//            yAxis: {
+//                max:150,
+//                axisLine: {
+//                    show: false
+//                },
+//                axisTick: {
+//                    show: false
+//                },
+//                splitNumber: 4,
+//                splitLine: {
+//                    lineStyle: {
+//                        type: "dashed"
+//                    }
+//                },
+//                axisLabel: {
+//                    show: false,
+//                    textStyle: {
+//                        color: '#999'
+//                    }
+//                }
+//            },
+//            dataZoom: [
+//                {
+//                    type: 'inside'
+//                }
+//            ],
+//            series: [
+//                {
+//                    data: data,
+//                    type: "bar",
+//                    label: {
+//                        normal: {
+//                            position: "top",
+//                            show: function () {
+//                                if (ticket == true) {
+//                                    return true;
+//                                }
+//                                else {
+//                                    return false;
+//                                }
+//                            }(),
+//                            textStyle: {
+//                                color: "red",
+//                                fontSize: 15
+//                            }
+//                        }
+//                    }
+//                },
+//                {
+//                    type: 'bar',
+//                    barGap: '-100%',
+//                    barCategoryGap: '40%',
+//                    animation: false
+//                },
+//                {
+//                    type: 'bar',
+//                    itemStyle: {
+//                        normal: {
+//                            color: new echarts.graphic.LinearGradient(
+//                                    0, 0, 0, 1,
+//                                    [
+//                                        {offset: 0, color: '#33cccc'},
+//                                        {offset: 1, color: '#2980b9'}
+//                                    ]
+//                            )
+//                        }
+//                    },
+//                    data: data
+//                }
+//            ]
+//        };
+//    }
+//    makemap();
+//    map.setOption(option);
+</script>
+<script name="show10">
+//    $("#show10").on("click", function () {
+//        makemap();
+//        map.setOption(option);
+//    })
+</script>
+<script name="showTicket">
+//    $("#showTicket").on("click", function () {
+//        makemap();
+//        map.setOption(option);
+//    })
+</script>
