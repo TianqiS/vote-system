@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/bars.css">
     <link rel="stylesheet" href="./css/utils.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=0"/>
 
 </head>
 <style>
@@ -119,30 +120,21 @@
 </style>
 <body class="voteEnd">
 <div class="topbar">
-    <div class="topContainer">
-        <span class="logoL"> <img src="./pic/logo.png" alt=" "> </span>
-        <div>
-        <span class="topTitle">
-            <div class=":active"><a href="./talentShow.html">风采展示</a></div>
-            <div class=":underline"></div>
-        </span>
-        <span class="topTitle">
-            <div class="active">为Ta投票</div>
+    <div class="topbarContainer">
+        <img src="./pic/logo.png" class="logo" alt=" ">
+        <a class="title "  href="./talentShow.html">
+            <div>风采展示</div>
             <div class="underline"></div>
-        </span>
+        </a>
+        <div class="title active">
+            <div>为Ta投票</div>
+            <div class="underline"></div>
         </div>
     </div>
 </div>
 <div class="container">
-    <div class="headerPic">
-        <div class="headerPic">
-            <div class="shade"></div>
-            <div class="title">
-                <div id="line1">杭 州 电 子 科 技 大 学 · 二 零 一 七</div>
-                <div id="line2">第八届“十佳教师”暨首届师德先进个人评选</div>
-            </div>
-        </div>
-    </div>
+    <img class="banner" src="./pic/banner_pc.jpg"/>
+    <img class="banner phone" src="./pic/banner_phone.jpg"/>
     <div class="voteRules">
         <h1>投票规则</h1>
         <ul>
@@ -160,7 +152,7 @@
     <div class="voteEndList"></div>
     <div class="stress">END</div>
 </div>
-<div class="bottombar">@ 2017.Powered by RedHome Studio</div>
+<div class="copyright">@ 2017.Powered by RedHome Studio 红色家园</div>
 </body>
 </html>
 

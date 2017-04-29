@@ -15,9 +15,8 @@
 <style>
 
 
-    .vote .container .voteRules {
-        margin: 35px auto;
-        padding: 20px 0;
+    .voteRules {
+        margin: 55px auto;
         width: 100%;
         max-width: 1260px;
         height: 205px;
@@ -28,13 +27,13 @@
         text-align: center;
     }
 
-    .vote .container .voteRules h1 {
+    .voteRules h1 {
         font-size: 24px;
         letter-spacing: 5px;
         margin-bottom: 30px;
     }
 
-    .vote .container .voteRules ul {
+    .voteRules ul {
         line-height: 24px;
         font-size: 14px;
         height: 165px;
@@ -42,13 +41,21 @@
         margin: 0 auto;
         text-align: left;
     }
-/***************************************************/
 
-    .teacherBox {
+/***************************************************/
+    .votelist{
+        display: none;
+    }
+    .votelist .teacherBox {
+        width:19.5%;
+        height:160px;
         background-position: 50%;
         background-size: cover;
     }
-    .teacherBox .numberCoin {
+    .votelist .teacherBox .shade {
+        height: 100%;
+    }
+    .votelist .teacherBox .numberCoin {
         animation:sideIn 1.5s;
         height: 100%;
         width: 100%;
@@ -60,7 +67,7 @@
         top: 0;
         margin: auto;
     }
-    .teacherBox .number {
+    .votelist .teacherBox .number {
         line-height: 30px;
         padding: 3px;
         margin: 40px auto 10px auto;
@@ -69,23 +76,23 @@
         width: 30px;
         border-radius: 30px;
     }
-    .teacherBox .number img{
+    .votelist .teacherBox .number img{
         display: none;
         width: 70%;
         height: 70%;
         margin:5px auto 0 auto;
     }
-
-    .teacherBox.active .shade{
+    .votelist .teacherBox.active .shade{
+        opacity: 0.5;
         background-image:linear-gradient(to right, #3cc, #2980b9);
     }
-    .teacherBox.active .numberCoin .number{
+    .votelist .teacherBox.active .numberCoin .number{
         background-image:linear-gradient(to right, #3cc, #2980b9);
     }
-    .teacherBox.active .number span{
+    .votelist .teacherBox.active .number span{
         display: none;
     }
-    .teacherBox.active .number img{
+    .votelist .teacherBox.active .number img{
         display: block;
     }
     /********************************************/
@@ -226,29 +233,21 @@
 
 <body class="vote">
 <div class="topbar">
-    <div class="topContainer">
-        <span class="logoL"> <img src="./pic/logo.png" alt=" "> </span>
-        <div>
-        <span class="topTitle">
-            <div class=":active"><a href="./talentShow.html">风采展示</a></div>
-            <div class=":underline"></div>
-        </span>
-        <span class="topTitle">
-            <div class="active">为Ta投票</div>
+    <div class="topbarContainer">
+        <img src="./pic/logo.png" class="logo" alt=" ">
+        <a class="title "  href="./talentShow.html">
+            <div>风采展示</div>
             <div class="underline"></div>
-        </span>
+        </a>
+        <div class="title active">
+            <div>为Ta投票</div>
+            <div class="underline"></div>
         </div>
     </div>
 </div>
 <div class="container">
-    <div class="headerPic">
-        <div class="shade"></div>
-        <div class="title">
-            <div id="line1">杭 州 电 子 科 技 大 学 · 二 零 一 七</div>
-            <div id="line2">第八届“十佳教师”暨首届师德先进个人评选</div>
-        </div>
-
-    </div>
+    <img class="banner" src="./pic/banner_pc.jpg"/>
+    <img class="banner phone" src="./pic/banner_phone.jpg"/>
     <div class="voteRules">
         <h1>投票规则</h1>
         <ul>
@@ -279,7 +278,7 @@
     <input type="text" maxlength="6" class="cdk" onkeydown="onlyNum()">
     <input type="submit" value="确 认">
 </div>
-<div class="bottombar">@ 2017.Powered by RedHome Studio</div>
+<div class="copyright">@ 2017.Powered by RedHome Studio 红色家园</div>
 </body>
 
 

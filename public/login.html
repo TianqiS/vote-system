@@ -82,7 +82,7 @@
         var t = $(".user").val(), a = $(".password").val();
         if (!t || !a)return void alert("用户名密码不能为空！");
         var e = $("input[type=submit]");
-        e.val("请稍候");
+        e.val("请稍候"),
         $.ajax({
             method: "post",
             url: "/common/login",
@@ -94,7 +94,7 @@
                 }
             },
             error: function (t) {
-                403 == t.status ? (e.attr("value", "登 录"), $(".response").html("登陆失败 请输入正确的用户名密码")) : (alert("连接超时 请稍后重试"), e.attr("value", "登 录"))
+                400== t.status ? (e.attr("value", "登 录"), $(".response").html("登陆失败 请输入正确的用户名密码")) : (alert("连接超时 请稍后重试"), e.attr("value", "登 录"))
             }
         })
     })
