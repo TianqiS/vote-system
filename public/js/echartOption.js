@@ -20,6 +20,7 @@ window.echartOption = {
         }
     }],
     yAxis: [{
+        show: false,
         axisTick: {
             alignWithLabel: true
         }

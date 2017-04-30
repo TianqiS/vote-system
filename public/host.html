@@ -17,6 +17,7 @@
         line-height: 50px;
         text-align: left;
         max-width: 1166px;
+        margin-top: 30px;
         border-radius: 8px;
         background-color: #fcfcfc;
         box-shadow: 0 0 6px 0 #e0e0e0;
@@ -73,7 +74,7 @@
     </div>
     <div id="map"></div>
 </div>
-<div class="absolute center copyright">&copy;  2017.Powered by RedHome Studio 红色家园</div>
+<div class="copyright">&copy;  2017.Powered by RedHome Studio 红色家园</div>
 <script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
 <script src="./js/utils.js" type="text/javascript"></script>
 <script src="./js/teacherData.js" type="text/javascript"></script>
@@ -82,6 +83,7 @@
 <script>
     $(function () {
         var $timeContainer = $('.timebar .time');
+        var $timeStart = $('.timeStart');
         // init time bar
         $.ajax({
             method: 'get',
@@ -93,28 +95,32 @@
                     return
                 }
                 var timeNow = new Date().getTime();
-                var timeEnd = timeStart + 1000 * 60 * duration;
+                var timeEnd = data.time + 1000 * 60 * data.duration;
                 var surplus = timeEnd - timeNow;
                 if (surplus < 0) {
                     $timeContainer.text("00:03:00");
                     return
                 }
+                $timeStart.addClass('disabled');
                 startTime($timeContainer, surplus, function () {
                     // over
+                    $timeStart.removeClass('disabled');
                 })
             },
             error: function () {
                 alert('网络请求失败，请稍后重试');
             }
         });
-        $('.timeStart').on('click', function () {
+        $timeStart.on('click', function () {
             $(this).addClass('disabled');
             $.ajax({
-                method: "get",
+                method: "post",
                 url: "/admin/start",
                 success: function () {
+                    $timeStart.addClass('disabled');
                     startTime($timeContainer, 3 * 60 * 1000, function () {
                         // over
+                        $timeStart.removeClass('disabled');
                     })
                 },
                 error: function (data) {

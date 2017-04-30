@@ -9,109 +9,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <style>
-
+    .red {
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 3.6px;
+        color: #ff6666;
+    }
 
     .voteRules {
-        margin: 55px auto;
-        width: 100%;
-        max-width: 1260px;
-        height: 205px;
+        margin: 30px auto;
+        padding: 20px 15px 30px 15px;
         border-radius: 10px;
         background-color: #fcfcfc;
         box-shadow: 0 0 6px 0 #e0e0e0;
         color: #999999;
         text-align: center;
     }
-
-    .voteRules h1 {
+    .voteRules .title {
         font-size: 24px;
         letter-spacing: 5px;
-        margin-bottom: 30px;
+        font-weight: bold;
+        margin-bottom: 20px;
     }
-
-    .voteRules ul {
+    .voteRules .content {
         line-height: 24px;
         font-size: 14px;
-        height: 165px;
-        width: 480px;
+        max-width: 480px;
         margin: 0 auto;
         text-align: left;
     }
 
-/***************************************************/
-    .votelist{
-        display: none;
+    .teacherBox {
+        width: 19.5%;
+        margin-bottom: 7px;
     }
-    .votelist .teacherBox {
-        width:19.5%;
-        height:160px;
-        background-position: 50%;
-        background-size: cover;
-    }
-    .votelist .teacherBox .shade {
-        height: 100%;
-    }
-    .votelist .teacherBox .numberCoin {
-        animation:sideIn 1.5s;
-        height: 100%;
-        width: 100%;
-        font-size: 17px;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        margin: auto;
-    }
-    .votelist .teacherBox .number {
+    .teacherBox .number {
         line-height: 30px;
         padding: 3px;
-        margin: 40px auto 10px auto;
+        margin: auto;
+        margin-bottom: 10px;
         border: 2px solid white;
         height: 30px;
         width: 30px;
         border-radius: 30px;
     }
-    .votelist .teacherBox .number img{
+    .teacherBox .number img {
         display: none;
         width: 70%;
         height: 70%;
-        margin:5px auto 0 auto;
+        margin: 5px auto 0 auto;
     }
-    .votelist .teacherBox.active .shade{
-        opacity: 0.5;
-        background-image:linear-gradient(to right, #3cc, #2980b9);
+    .teacherBox .shade .content{
+        width: 64px;
+        height: 75px;
     }
-    .votelist .teacherBox.active .numberCoin .number{
-        background-image:linear-gradient(to right, #3cc, #2980b9);
+    .teacherBox.active .shade {
+        background-image: linear-gradient(to right, rgba(51, 204, 204, .5), rgba(41, 128, 185, .5));
     }
-    .votelist .teacherBox.active .number span{
+    .teacherBox.active .number {
+        background: -webkit-gradient(linear,left top,left bottom,from(#2980b9),to(#33cccc));
+    }
+    .teacherBox.active .number span {
         display: none;
     }
-    .votelist .teacherBox.active .number img{
+    .teacherBox.active .number img {
         display: block;
     }
-    /********************************************/
 
-    .vote .container .timeleft {
-        font-size: 18px;
-        margin: 15px;
-        letter-spacing: 4px;
+    .vote .timer {
+        line-height: 40px;
+        margin-bottom: 15px;
     }
-    .submission{
-        display: none;
+    .submission {
+        padding-top: 30px;
     }
     .submission .stress {
         font-size: 21px;
         letter-spacing: 4px;
     }
-
     .submission .notice {
-        margin: 18px auto;
+        line-height: 26px;
         letter-spacing: 3px;
         font-size: 14px;
     }
-
     .submission .submit {
         letter-spacing: 4px;
         margin-top: 15px;
@@ -121,113 +101,90 @@
         font-size: 18px;
         pointer-events: none;
     }
-
-    .submission .submit.active{
+    .submission .submit.active {
         background: linear-gradient(to right, #33cccc, #2980b9);
         cursor: pointer;
         pointer-events: auto;
     }
 
-
-
-/*******************************************************************************/
-    .vote .overlay {
-        display: none;
-        opacity: 0.6;
-        position: absolute;
+    .modal {
+        position: fixed;
         top: 0;
         left: 0;
-        background-color: black;
         width: 100%;
-        z-index: 5000
+        height: 100%;
+        background: rgba(0, 0, 0, .7);
     }
-
-    .vote .voterCheck {
-        display: none;
-        width: 350px;
-        height: 520px;
+    .modal .card {
+        width: 255px;
+        height: 410px;
         border-radius: 10px;
         background-color: #fcfcfc;
         box-shadow: 0 0 15px 0 #e0e0e0;
-
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
+        padding: 40px;
+    }
+    .modal .image {
+        display: block;
+        width: 40px;
         margin: auto;
-        z-index: 5001;
+        margin-top: 55px;
     }
-
-    .vote .voterCheck .exit {
-        margin: 20px 0 0 310px;
-        background-image: url("./pic/icon/关闭.png");
-        background-size: cover;
-        width: 20px;
-        height: 20px;
-    }
-
-    .vote .voterCheck .exit:hover {
-        cursor: pointer;
-    }
-
-    .vote .voterCheck .bell {
-        margin: 80px auto 0 auto;
-        background-image: url("./pic/icon/铃铛.png");
-        background-size: cover;
-        width: 50px;
-        height: 50px;
-    }
-
-    .vote .voterCheck .note {
-        margin: 60px auto 0 auto;
-        width: 252px;
-        line-height: 30px;
-        height: 60px;
+    .modal .note {
+        margin: 60px 0;
         font-size: 14px;
         font-weight: bold;
+        color: #666666;
     }
-
-    .vote .voterCheck .cdk {
-        display: block;
-        text-align: center;
+    .modal .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 20px;
+        cursor: pointer;
+        transition: .5s;
+    }
+    .modal .close:hover {
+        transform: rotateZ(90deg);
+    }
+    .modal input {
+        width: 100%;
+        height: 50px;
         outline: none;
         border: none;
-        width: 270px;
-        line-height: 50px;
-        height: 50px;
-        margin: 50px auto 0 auto;
-        background-color: #f0f0f0;
-        color: #666;
-        font-size: 22px;
-    }
-
-    .vote .voterCheck input[type=submit] {
-        display: block;
-        margin: 30px auto 0 auto;
-        width: 270px;
-        height: 50px;
-        background-image: linear-gradient(to right, #33cccc, #2980b9);
         font-size: 18px;
-        letter-spacing: 4px;
+        line-height: 50px;
+        text-align: center;
+        background-color: #f0f0f0;
+    }
+    .modal .submit {
+        height: 50px;
+        line-height: 50px;
+        margin: 30px 0;
+        color: white;
+        font-weight: bold;
+        background: linear-gradient(to right, #33cccc, #2980b9);
     }
 
-    .vote.alert .overlay{
-        display: block;
-        position: fixed;
-        height: 100%;
+    @media screen and (max-width: 700px) {
+        .voteRules {
+            margin-left: 12px!important;
+            margin-right: 12px!important;
+        }
+        .votelist {
+            padding: 0 12px;
+        }
+        .votelist .teacherBox {
+            width: 49%;
+            margin-bottom: 6px;
+        }
     }
-    .vote.alert .voterCheck{
-        display: block;
-    }
-
 </style>
 
-<body class="vote">
+<body>
 <div class="topbar">
     <div class="topbarContainer">
         <img src="./pic/logo.png" class="logo" alt=" ">
-        <a class="title"  href="./talentShow.html">
+        <a class="title" href="./talentShow.html">
             <div>风采展示</div>
             <div class="underline"></div>
         </a>
@@ -241,193 +198,185 @@
     <img class="banner" src="./pic/banner_pc.jpg"/>
     <img class="banner phone" src="./pic/banner_phone.jpg"/>
     <div class="voteRules">
-        <h1>投票规则</h1>
-        <ul>
-            <li>此活动采取评委团无记名投票，评委团由专家评委和师生评委组成；</li>
-            <li>每位评委限投一次，每次选8-10人为有效票；</li>
-            <li>专家评委投一票计3票、师生评委投一票计1票；</li>
-            <li>最终得票数排在前10名的候选人获得“十佳教师 & 师德先进个人”称号。</li>
-        </ul>
+        <div class="title">投票规则</div>
+        <div class="content">
+            <div>● 此活动采取评委团无记名投票，评委团由专家评委和师生评委组成；</div>
+            <div>● 每位评委限投一次，每次选8-10人为有效票；</div>
+            <div>● 专家评委投一票计3票、师生评委投一票计1票；</div>
+            <div>● 最终得票数排在前10名的候选人获得”十佳教师 & 师德先进个人“称号。</div>
+        </div>
     </div>
-    <div>
+    <div class="voteNotStart none">
+        <div class="red">投票尚未开始</div>
+    </div>
+    <div class="voteEnd none">
+        <div>投票结束</div>
+    </div>
+    <div class="vote none">
         <div>距投票结束还有</div>
-        <div class="timeleft">投票未开始</div>
+        <div class="timer red"></div>
+        <div class="votelist"></div>
     </div>
-
-    <div class="votelist"></div>
-
-    <div class="submission">
-        <div class="stress">0/20</div>
+    <div class="submission none">
+        <div class="stress"><span class="selectNumber">0</span>/20</div>
         <div class="notice">(8-10人为有效票)</div>
         <input type="submit" value="提 交" class="submit">
     </div>
 </div>
-<div class="overlay"></div>
-<div class="voterCheck">
-    <div class="exit"></div>
-    <div class="bell"></div>
-    <div class="note">此活动采取【评委投票制】，请输入您的【邀请码】以验证评委身份。</div>
-    <input type="text" maxlength="6" class="cdk" onkeydown="onlyNum()">
-    <input type="submit" value="确 认">
+
+<div class="modal none">
+    <div class="absolute center card">
+        <img class="close" src="./pic/icon/close.png" alt="">
+        <img class="image" src="./pic/icon/bell.png" alt="">
+        <div class="note">此活动采取【评委投票制】，请输入您的【邀请码】以验证评委身份。</div>
+        <input type="text" maxlength="5">
+        <div class="submit">确 认</div>
+    </div>
 </div>
+
 <div class="copyright">&copy; 2017.Powered by RedHome Studio 红色家园</div>
+
 <script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
 <script src="./js/teacherData.js" type="text/javascript"></script>
 <script src="./js/utils.js" type="text/javascript"></script>
 
 <script id="teacherContainer" type="application/xml">
-    <div class="teacherBox" style="background-image:url('./pic/teacherLong/__name__.jpg')" id="__id__">
-        <div class="shade"></div>
-        <div class="numberCoin">
-            <div class="number">
-                <span>__number__</span>
-                <img src='./pic/icon/勾.png' style=''/>
+    <div class="teacherBox" id="__id__">
+        <img src="./pic/teacherLong/__name__.jpg"/>
+        <div class="absolute center shade">
+            <div class="absolute center content">
+                <div class="number">
+                    <span>__number__</span>
+                    <img src='./pic/icon/check.png'/>
+                </div>
+                <div>__name__</div>
             </div>
-            <div>__name__</div>
         </div>
     </div>
 </script>
 <script>
     $(function () {
-
-        //各状态显示
-        var voteStatus=localStorage.getItem('voteStatus');
-        if(voteStatus=='done'){
-            $(".votelist").show();
-        }
-        else if(voteStatus=='unbegin'){
-        }
-        else{
-            $('.votelist').show();
-            $('.submission').show();
-        }
-
-        //列表建立
-
-            var teacherContainerCode = $('#teacherContainer').html();
-            teacherInfo.forEach(function (e) {
-                var str = teacherContainerCode.replaceAll({
-                    '__name__': e.teacher,
-                    '__id__': e.id,
-                    '__number__': e.number
-                });
-                $('.votelist').append(str)
+        // init teacher list
+        var teacherContainerCode = $('#teacherContainer').html();
+        $voteList = $('.votelist');
+        teacherInfo.forEach(function (e) {
+            var str = teacherContainerCode.replaceAll({
+                '__name__': e.name,
+                '__id__': e.id,
+                '__number__': e.number
             });
-
-        //教师选择
-        if(voteStatus!='done') {
-            var sum = 0;
-            var $sum = $('.submission .stress');
-            var $submit = $('.submit');
-            $(".teacherBox").on("click", function () {
-                var $this = $(this);
-                var id = $(this).attr("id");
-                if ($this.hasClass('active')) {
-                    $this.removeClass("active");
-                    sum--;
-                    activeJdg();
-                }
-                else {
-                    $this.addClass("active")
-                    sum++;
-                    activeJdg();
-                }
-                $sum.html(sum + "/20");
-            })
-            function activeJdg() {
-                if (sum >= 8 && sum <= 10) {
-                    $submit.addClass("active");
-                }
-                else {
-                    $submit.removeClass("active");
-                }
-
-            }
-
-            $submit.on('click', function () {
-                $(".vote").addClass("alert");
-            })
-        }
-        else{
-            haveVote();
-        }
-
-    })
-</script>
-<script>
-
-    var teacherSelected=[];
-    //保留已投的结果
-    function haveVote(){
-        teacherSelected=(localStorage.getItem('teacherSelected')).split(",");
-        console.log(teacherSelected);
-        for(var i in teacherSelected){
-            $(".votelist .teacherBox:nth-of-type("+teacherSelected[i]+")").addClass("active");
-        }
-        $(".teacherBox").css("pointer-events","none");
-    }
-
-
-    //关闭邀请码窗口
-    $('.voterCheck .exit').on("click", function () {
-        $(".voterCheck .cdk").val('');
-        $(".vote").removeClass("alert");
-    })
-
-
-    //确认提交投票
-    $('.voterCheck input[type=submit]').on("click", function () {
-        var cdk = $(".cdk").val();
-        teacherSelected=[];
-        $(".teacherBox.active").each(function () {
-            teacherSelected.push($(this).attr("id"));
+            $voteList.append(str)
         });
-        console.log(teacherSelected);
+        $voteList.append('<div class="teacherBox disabled"></div>');
+
+        // init vote state
+        var $vote = $('.vote');
+        var $voteNotStart = $('.voteNotStart');
+        var $voteEnd = $('.voteEnd');
+        var $submission = $('.submission');
+        var $timeContainer = $('.vote .timer');
         $.ajax({
-            method:"post",
-            url:"/common/vote",
-            data:{
-                code:cdk,
-                teacherId:teacherSelected
-            },
-            success:function(){
-                alert("投票成功，感谢您宝贵的一票~");
-                localStorage.setItem('voteStatus','done');
-                localStorage.setItem('teacherSelected',teacherSelected);
-                location.reload();
-            },
-            error:function(data){
-                alert(data.responseJSON.msg);
+            url: '/common/time',
+            method: 'get',
+            success: function (data) {
+                if (!data.time) {
+                    $voteNotStart.fadeIn();
+                    return
+                }
+                var timeNow = new Date().getTime();
+                var timeEnd = data.time + 1000 * 60 * data.duration;
+                var surplus = timeEnd - timeNow;
+                if (surplus < 0) {
+                    $voteEnd.fadeIn();
+                    return
+                }
+                checkVoteStatus();
+                $vote.fadeIn();
+                startTime($timeContainer, surplus, function () {
+                    $vote.fadeOut();
+                    $voteEnd.fadeIn();
+                })
+            }, error: function () {
+                alert("网络连接失败，请刷新后重试");
             }
+        });
+
+        // 检查是否投过票
+        function checkVoteStatus() {
+            var voteStatus = localStorage.getItem('voteStatus');
+            if (!voteStatus) {
+                $submission.fadeIn();
+                return
+            }
+            voteStatus = voteStatus.split(',');
+            $.each($('.teacherBox'), function (i, e) {
+                var $e = $(e);
+                $e.addClass('disabled');
+                if (voteStatus.indexOf( $e.attr('id') ) !== -1) {
+                    $e.addClass('active')
+                }
+            });
+        }
+
+        // teacherbox click
+        var $submit = $submission.find('[type=submit]');
+        var $selectNumber = $submission.find('.selectNumber');
+        var selectNumber = 0;
+        $vote.on("click", '.teacherBox:not(.disabled)', function () {
+            var $this = $(this);
+            if ($this.hasClass('active')) {
+                $this.removeClass('active');
+                selectNumber--;
+            } else {
+                $this.addClass('active');
+                selectNumber++;
+            }
+
+            $selectNumber.text(selectNumber);
+            // submit button style
+            if (selectNumber >= 8 && selectNumber <= 10) {
+                $submit.addClass('active')
+            } else {
+                $submit.removeClass('active')
+            }
+        });
+
+        // 浮动窗口
+        $modal = $('.modal');
+        $submit.on('click', function () {
+            $modal.fadeIn();
+        });
+        $modal.find('.close').on('click', function () {
+            $modal.fadeOut();
+        });
+        $modal.find('.submit').on('click', function () {
+            var code = $modal.find('input').val();
+            if (!code || code.length !== 5) {
+                return alert("请输入正确的邀请码");
+            }
+
+            var ids = [];
+            $.each($('.teacherBox.active'), function (i, e) {
+                ids.push( $(e).attr('id') )
+            });
+            $.ajax({
+                url: '/common/vote',
+                method: 'post',
+                data: {
+                    teacherId: ids,
+                    code: code
+                },
+                success: function () {
+                    localStorage.setItem('voteStatus', ids.join(','));
+                    alert('投票成功，感谢您宝贵的一票~');
+                    location.reload();
+                },
+                error: function () {
+                    alert('服务器开小差了，请稍后重试');
+                }
+            })
         })
     })
-</script>
-<script>
-    //加入到倒计时
-    $.ajax({
-        method:"get",
-        url:"/common/time",
-        success:function (data) {
-            if (data.duration == 0 || data.time == 0) {
-                localStorage.setItem("voteStatus",'unbegin');
-                return;
-            }
-            if (data.time + data.duration * 60 * 1000 < new Date().getTime()) {
-                //over
-                window.location.href="./voteEnd.html";
-                return;
-            }
-            localStorage.removeItem("voteStatus");
-            timeCount(data.time, data.duration, function () {
-                window.location.href="./voteEnd.html";
-
-            });
-        },
-        error:function () {
-            alert("服务器开小差了哦~");
-        }
-    })
-
 </script>
 </body>
 </html>
