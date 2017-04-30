@@ -27,7 +27,7 @@ window.echartOption = {
     }],
     label: {
         normal: {
-            show: true,
+            show: false,
             position: 'top',
             formatter: '{c}'
         }
@@ -47,24 +47,35 @@ window.echartOption = {
     },
     series: [
         {
-            name: '票数',
-            type: 'bar',
-            barWidth: '50%',
-            barGap: '-100%',
-            itemStyle: {
-                normal: {
-                    color: 'transparent'
-                }
-            },
-            data: [1, 2, 10, 4, 3, 3, 7]
-        },
-        {
             name: '总票数',
             type: 'bar',
             barWidth: '50%',
-            data: [10, 52, 200, 334, 390, 330, 220]
-        },
-
+            data: [1, 2, 10, 4, 3, 3, 7]
+        }
+        // {
+        //     name: '专家票数',
+        //     type: 'bar',
+        //     barWidth: '50%',
+        //     barGap: '-100%',
+        //     itemStyle: {
+        //         normal: {
+        //             color: 'transparent'
+        //         }
+        //     },
+        //     data: [10, 52, 200, 334, 390, 330, 220]
+        // },
+        // {
+        //     name: '师生票数',
+        //     type: 'bar',
+        //     barWidth: '50%',
+        //     barGap: '-100%',
+        //     itemStyle: {
+        //         normal: {
+        //             color: 'transparent'
+        //         }
+        //     },
+        //     data: [10, 52, 200, 334, 390, 330, 220]
+        // }
     ],
     textStyle: {
         fontSize: 14,

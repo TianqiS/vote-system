@@ -70,6 +70,7 @@
         <div class="checkbox">
             <input type="checkbox" id="showFirstTen"><label for="showFirstTen">显示前十名</label>
             <input type="checkbox" id="showTicket"><label for="showTicket">显示具体票数</label>
+            <input type="checkbox" id="autoSort"><label for="autoSort">自动排序</label>
         </div>
     </div>
     <div id="map"></div>
@@ -82,6 +83,7 @@
 <script src="./js/echartOption.js" type="text/javascript"></script>
 <script>
     $(function () {
+        window.config = {};
         var $timeContainer = $('.timebar .time');
         var $timeStart = $('.timeStart');
         // init time bar
@@ -140,10 +142,68 @@
                 }
             })
         });
-        $('#showFirstTen').on('click');
+        $('#showFirstTen').on('click', function () {
+            window.config.showTopTen = this.checked;
+            updateEchart(window.data);
+        });
+        $('#showTicket').on('click', function () {
+            if (this.checked) {
+                map.setOption({
+                    label: {normal: {show: true}}
+                })
+            } else {
+                map.setOption({
+                    label: {normal: {show: false}},
+                })
+            }
+        });
+        $('#autoSort').on('click', function () {
+            window.config.autoSort = this.checked;
+            updateEchart(window.data);
+        });
+
         // echart
-        var map = echarts.init(document.getElementById("map"));
-        map.setOption(echartOption)
+        window.map = echarts.init(document.getElementById("map"));
+        map.setOption(echartOption);
+
+        $.ajax({
+            url: '/common/getResult',
+            success: function (data) {
+                updateEchart(data.result);
+            }
+        });
+
+        function updateEchart(data) {
+            var teachers = [];
+            var score = [];
+//            var expert = [];
+//            var ordinary = [];
+            var length = data.length;
+            if (window.config.showTopTen || window.config.autoSort) {
+                data = sortScore(data);
+            } else {
+                data.sort(function (a, b) {
+                    return a.id * 1 - b.id * 1;
+                });
+            }
+            if (window.config.showTopTen) {
+                length = 10;
+            }
+            for (var i = 0; i < length; i ++) {
+                var item = data[i];
+                var info = teacherInfo[ item.id - 1 ];
+                teachers.push(info.name);
+                score.push(item.number_of_votes);
+//                expert.push(item.expert_number);
+//                ordinary.push(item.ordinary_number);
+            }
+            echartOption.xAxis[0].data = teachers;
+            echartOption.series[0].data = score;
+//            echartOption.series[1].data = expert;
+//            echartOption.series[2].data = ordinary;
+            map.setOption(echartOption);
+            window.data = data;
+        }
     })
 </script>
 </body>
@@ -315,16 +375,4 @@
 //    }
 //    makemap();
 //    map.setOption(option);
-</script>
-<script name="show10">
-//    $("#show10").on("click", function () {
-//        makemap();
-//        map.setOption(option);
-//    })
-</script>
-<script name="showTicket">
-//    $("#showTicket").on("click", function () {
-//        makemap();
-//        map.setOption(option);
-//    })
 </script>
