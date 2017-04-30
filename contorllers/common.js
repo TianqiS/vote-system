@@ -13,7 +13,7 @@ let mid = require('../utils/middleware');
 router.post('/login', async function (ctx) {
     let info = _.pick(ctx.request.body, ['userName', 'password']);
 
-    if(info.userName != 'userName' || info.password != 'password')
+    if(info.userName !== 'redhomeStudio' || info.password !== 'bestWorld')
     {
         throw 40005;
     }
