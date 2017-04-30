@@ -357,7 +357,7 @@
                 showResult();
                 return
             }
-            checkVoteStatus();
+            checkVoteStatus(data.time);
             $vote.fadeIn();
             startTime($timeContainer, surplus, function () {
                 $vote.fadeOut();
@@ -365,9 +365,13 @@
             })
         }
         // 检查是否投过票
-        function checkVoteStatus() {
+        function checkVoteStatus(startTime) {
             var voteStatus = localStorage.getItem('voteStatus');
-            if (!voteStatus) {
+            var start = localStorage.getItem('startTime');
+            // 根据start time判断是否是上一次投票
+            if (!voteStatus || start != startTime) {
+                localStorage.clear();
+                localStorage.setItem('startTime', startTime);
                 $submission.fadeIn();
                 return
             }
@@ -470,6 +474,10 @@
             $voteNotStart.fadeOut();
             $voteEnd.fadeOut();
             initPage(data);
+        });
+        socket.on('reset', function () {
+            localStorage.clear();
+            window.location.reload();
         })
     })
 </script>
