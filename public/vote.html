@@ -76,6 +76,52 @@
         display: block;
     }
 
+    .voteEnd .notice {
+        font-size: 14px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+    .result {
+        padding: 0 12px;
+        max-width: 700px;
+        margin: auto;
+    }
+    .result .item {
+        border-radius: 10px;
+        background-color: #fcfcfc;
+        box-shadow: 0 0 6px 0 #e0e0e0;
+        text-align: left;
+        padding: 10px 20px;
+        font-size: 12px;
+        color: #999999;
+        margin-bottom: 15px;
+    }
+    .result .item > * {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .result .avatar {
+        width: 60px;
+        border-radius: 100px;
+        margin-right: 20px;
+    }
+    .result .name {
+        font-size: 16px;
+        font-weight: bold;
+        text-align: left;
+        color: #666666;
+        line-height: 28px;
+    }
+    .result .number {
+        font-size: 20px;
+        font-weight: bold;
+        vertical-align: bottom;
+    }
+    .result .right {
+        float: right;
+        line-height: 60px;
+    }
+
     .vote .timer {
         line-height: 40px;
         margin-bottom: 15px;
@@ -210,7 +256,9 @@
         <div class="red">投票尚未开始</div>
     </div>
     <div class="voteEnd none">
-        <div>投票结束</div>
+        <div class="red">投票已结束</div>
+        <div class="notice">投票结果如下（只显示前10名得票数）</div>
+        <div class="result"></div>
     </div>
     <div class="vote none">
         <div>距投票结束还有</div>
@@ -239,7 +287,16 @@
 <script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
 <script src="./js/teacherData.js" type="text/javascript"></script>
 <script src="./js/utils.js" type="text/javascript"></script>
-
+<script id="teacherResult" type="application/xml">
+    <div class="item">
+        <div class="right"><span class="number stress">__score__</span> / 票</div>
+        <img class="avatar" src="./pic/teacher/__name__.jpg" alt=""/>
+        <div>
+            <div class="name">__name__</div>
+            <div class="department">__department__</div>
+        </div>
+    </div>
+</script>
 <script id="teacherContainer" type="application/xml">
     <div class="teacherBox" id="__id__">
         <img src="./pic/teacherLong/__name__.jpg"/>
@@ -258,6 +315,7 @@
     $(function () {
         // init teacher list
         var teacherContainerCode = $('#teacherContainer').html();
+        var resultCode = $('#teacherResult').html();
         $voteList = $('.votelist');
         teacherInfo.forEach(function (e) {
             var str = teacherContainerCode.replaceAll({
@@ -287,14 +345,14 @@
                 var timeEnd = data.time + 1000 * 60 * data.duration;
                 var surplus = timeEnd - timeNow;
                 if (surplus < 0) {
-                    $voteEnd.fadeIn();
+                    showResult();
                     return
                 }
                 checkVoteStatus();
                 $vote.fadeIn();
                 startTime($timeContainer, surplus, function () {
                     $vote.fadeOut();
-                    $voteEnd.fadeIn();
+                    showResult();
                 })
             }, error: function () {
                 alert("网络连接失败，请刷新后重试");
@@ -316,6 +374,31 @@
                     $e.addClass('active')
                 }
             });
+        }
+
+        // 展示结果
+        function showResult() {
+            $voteEnd.fadeIn();
+            var $resultContainer = $voteEnd.find('.result');
+            $.ajax({
+                url: '/common/getResult',
+                success: function (data) {
+                    var res = sortScore(data.result);
+                    for (var i = 0; i < 10;i ++) {
+                        var v = res[i];
+                        var info = teacherInfo[ v.id-1 ];
+                        var str = resultCode.replaceAll({
+                            '__name__': info.name,
+                            '__department__': info.department,
+                            '__score__': v.number_of_votes
+                        });
+                        $resultContainer.append(str);
+                    }
+                },
+                error: function () {
+                    alert('获取结果失败，请刷新后重试')
+                }
+            })
         }
 
         // teacherbox click
