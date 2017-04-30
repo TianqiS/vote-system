@@ -56,7 +56,7 @@ router.post('/vote',mid.timeControl(), async ctx => {
     await voteNumberModule.vote(info);
     global.io.emit('vote', {
         vote_direction: info.teacherId,
-        codeNumber: info.code
+        weight: (info.code + '')[0] === '1' ? 3 : 1
     });
     ctx.body = {
         status : 'success',

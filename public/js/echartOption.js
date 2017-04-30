@@ -14,9 +14,18 @@ window.echartOption = {
     },
     xAxis: [{
         type: 'category',
-        data: ["何晨玥", "黄鹤", "黄进刚", "黄巍", "罗春华", "毛志强", "孟金环", "齐童巍", "吴国华", "薛洁", "杨子飞", "姚英彪", "叶兴浩", "叶岩明", "张海峰", "张红娟", "张显斗", "赵蓉", "赵伟杰"],
+        data: [],
         axisTick: {
             alignWithLabel: true
+        },
+        axisLabel: {
+            formatter:function(val){
+                var array = val.split("");
+                return array[0] + array.join("\n\n").substring(3);
+            },
+            textStyle: {
+                fontSize: 16
+            }
         }
     }],
     yAxis: [{
@@ -29,7 +38,10 @@ window.echartOption = {
         normal: {
             show: false,
             position: 'top',
-            formatter: '{c}'
+            formatter: '{c}',
+            textStyle: {
+                fontSize: 18
+            }
         }
     },
     itemStyle: {
@@ -49,33 +61,30 @@ window.echartOption = {
         {
             name: '总票数',
             type: 'bar',
-            barWidth: '50%',
-            data: [1, 2, 10, 4, 3, 3, 7]
+            data: []
+        },
+        {
+            name: '专家票数',
+            type: 'bar',
+            barGap: '-100%',
+            itemStyle: {
+                normal: {
+                    color: 'transparent'
+                }
+            },
+            data: []
+        },
+        {
+            name: '师生票数',
+            type: 'bar',
+            barGap: '-100%',
+            itemStyle: {
+                normal: {
+                    color: 'transparent'
+                }
+            },
+            data: []
         }
-        // {
-        //     name: '专家票数',
-        //     type: 'bar',
-        //     barWidth: '50%',
-        //     barGap: '-100%',
-        //     itemStyle: {
-        //         normal: {
-        //             color: 'transparent'
-        //         }
-        //     },
-        //     data: [10, 52, 200, 334, 390, 330, 220]
-        // },
-        // {
-        //     name: '师生票数',
-        //     type: 'bar',
-        //     barWidth: '50%',
-        //     barGap: '-100%',
-        //     itemStyle: {
-        //         normal: {
-        //             color: 'transparent'
-        //         }
-        //     },
-        //     data: [10, 52, 200, 334, 390, 330, 220]
-        // }
     ],
     textStyle: {
         fontSize: 14,

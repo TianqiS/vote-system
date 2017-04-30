@@ -76,11 +76,12 @@
     <div id="map"></div>
 </div>
 <div class="copyright">&copy;  2017.Powered by RedHome Studio 红色家园</div>
-<script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
-<script src="./js/utils.js" type="text/javascript"></script>
-<script src="./js/teacherData.js" type="text/javascript"></script>
-<script src="./js/echarts.min.js" type="text/javascript"></script>
-<script src="./js/echartOption.js" type="text/javascript"></script>
+<script src="./js/jquery-2.0.0.min.js"></script>
+<script src="./js/utils.js"></script>
+<script src="./js/teacherData.js"></script>
+<script src="./js/echarts.min.js"></script>
+<script src="./js/echartOption.js"></script>
+<script src="./js/socket.io.min.js"></script>
 <script>
     $(function () {
         window.config = {};
@@ -131,6 +132,8 @@
             })
         });
         $('.timeReset').on('click', function () {
+            if (!confirm('确认清空所有数据？')) return;
+
             $.ajax({
                 method: "get",
                 url: "/admin/reset",
@@ -164,7 +167,6 @@
 
         // echart
         window.map = echarts.init(document.getElementById("map"));
-        map.setOption(echartOption);
 
         $.ajax({
             url: '/common/getResult',
@@ -176,8 +178,8 @@
         function updateEchart(data) {
             var teachers = [];
             var score = [];
-//            var expert = [];
-//            var ordinary = [];
+            var expert = [];
+            var ordinary = [];
             var length = data.length;
             if (window.config.showTopTen || window.config.autoSort) {
                 data = sortScore(data);
@@ -192,18 +194,33 @@
             for (var i = 0; i < length; i ++) {
                 var item = data[i];
                 var info = teacherInfo[ item.id - 1 ];
-                teachers.push(info.name);
+                teachers.push(info.number + info.name);
                 score.push(item.number_of_votes);
-//                expert.push(item.expert_number);
-//                ordinary.push(item.ordinary_number);
+                expert.push(item.expert_number);
+                ordinary.push(item.ordinary_number);
             }
             echartOption.xAxis[0].data = teachers;
             echartOption.series[0].data = score;
-//            echartOption.series[1].data = expert;
-//            echartOption.series[2].data = ordinary;
+            echartOption.series[1].data = expert;
+            echartOption.series[2].data = ordinary;
             map.setOption(echartOption);
             window.data = data;
         }
+
+        // web socket
+        var socket = io.connect('/');
+        socket.on('vote' ,function (d) {
+            window.data.forEach(function (e) {
+                if ( d.vote_direction.indexOf( e.id + "" ) === -1) return;
+                e.number_of_votes += d.weight;
+                if (d.weight == 3) {
+                    e.expert_number += 1
+                } else {
+                    e.ordinary_number += 1
+                }
+            });
+            updateEchart(window.data)
+        })
     })
 </script>
 </body>
