@@ -52,6 +52,7 @@
 
     .votelist .teacherBox {
         width: 100%;
+        margin-bottom: 0;
     }
 
     .votelist .teacherBox .shade {
