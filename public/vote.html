@@ -284,9 +284,10 @@
 
 <div class="copyright">&copy; 2017.Powered by RedHome Studio 红色家园</div>
 
-<script src="./js/jquery-2.0.0.min.js" type="text/javascript"></script>
-<script src="./js/teacherData.js" type="text/javascript"></script>
-<script src="./js/utils.js" type="text/javascript"></script>
+<script src="./js/jquery-2.0.0.min.js"></script>
+<script src="./js/teacherData.js"></script>
+<script src="./js/utils.js"></script>
+<script src="./js/socket.io.min.js"></script>
 <script id="teacherResult" type="application/xml">
     <div class="item">
         <div class="right"><span class="number stress">__score__</span> / 票</div>
@@ -337,28 +338,32 @@
             url: '/common/time',
             method: 'get',
             success: function (data) {
-                if (!data.time) {
-                    $voteNotStart.fadeIn();
-                    return
-                }
-                var timeNow = new Date().getTime();
-                var timeEnd = data.time + 1000 * 60 * data.duration;
-                var surplus = timeEnd - timeNow;
-                if (surplus < 0) {
-                    showResult();
-                    return
-                }
-                checkVoteStatus();
-                $vote.fadeIn();
-                startTime($timeContainer, surplus, function () {
-                    $vote.fadeOut();
-                    showResult();
-                })
+                initPage(data);
             }, error: function () {
                 alert("网络连接失败，请刷新后重试");
             }
         });
 
+        // 根据后台时间情况判断界面显示样式
+        function initPage(data) {
+            if (!data.time) {
+                $voteNotStart.fadeIn();
+                return
+            }
+            var timeNow = new Date().getTime();
+            var timeEnd = data.time + 1000 * 60 * data.duration;
+            var surplus = timeEnd - timeNow;
+            if (surplus < 0) {
+                showResult();
+                return
+            }
+            checkVoteStatus();
+            $vote.fadeIn();
+            startTime($timeContainer, surplus, function () {
+                $vote.fadeOut();
+                showResult();
+            })
+        }
         // 检查是否投过票
         function checkVoteStatus() {
             var voteStatus = localStorage.getItem('voteStatus');
@@ -375,7 +380,6 @@
                 }
             });
         }
-
         // 展示结果
         function showResult() {
             $voteEnd.fadeIn();
@@ -458,6 +462,14 @@
                     alert('服务器开小差了，请稍后重试');
                 }
             })
+        })
+
+        // web socket
+        var socket = io.connect('/');
+        socket.on('startVote', function (data) {
+            $voteNotStart.fadeOut();
+            $voteEnd.fadeOut();
+            initPage(data);
         })
     })
 </script>
