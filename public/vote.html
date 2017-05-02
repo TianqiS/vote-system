@@ -481,7 +481,7 @@
         });
         socket.on('reset', function () {
             localStorage.clear();
-            window.location.reload();
+            window.location.href = '/vote.html?time=' + new Date().getTime();
         })
     })
 </script>
