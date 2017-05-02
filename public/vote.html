@@ -462,8 +462,12 @@
                     alert('投票成功，感谢您宝贵的一票~');
                     location.reload();
                 },
-                error: function () {
-                    alert('服务器开小差了，请稍后重试');
+                error: function (err) {
+                    if (err.responseJSON && err.responseJSON.status == 'error') {
+                        alert(err.responseJSON.msg);
+                    } else {
+                        alert('服务器开小差了，请稍后重试');
+                    }
                 }
             })
         })
