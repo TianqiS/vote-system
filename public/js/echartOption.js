@@ -21,7 +21,7 @@ window.echartOption = {
         axisLabel: {
             formatter:function(val){
                 var array = val.split("");
-                return array[0] + array.join("\n\n").substring(3);
+                return array[0] + array.join("\n").substring(2);
             },
             textStyle: {
                 fontSize: 16
@@ -32,7 +32,8 @@ window.echartOption = {
         show: false,
         axisTick: {
             alignWithLabel: true
-        }
+        },
+        max: 300
     }],
     label: {
         normal: {
