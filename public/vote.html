@@ -460,7 +460,7 @@
                 success: function () {
                     localStorage.setItem('voteStatus', ids.join(','));
                     alert('投票成功，感谢您宝贵的一票~');
-                    location.reload();
+                    window.location.href = '/vote.html?time=' + new Date().getTime();
                 },
                 error: function (err) {
                     if (err.responseJSON && err.responseJSON.status == 'error') {
