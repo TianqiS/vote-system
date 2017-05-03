@@ -135,5 +135,3 @@ var teacherInfo = [{
     "id": 19,
     "number": "19"
 }];
-
-
