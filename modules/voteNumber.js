@@ -8,18 +8,20 @@ exports.vote = function (info) {
             //增加投票数目
             let increment = {};
 
-            if((info.code + '')[0] == 1) {
-                increment['expert_number'] = voteNumberModel.raw(trx, 'expert_number + 1');
-                increment['number_of_votes'] = voteNumberModel.raw(trx, 'number_of_votes + 3');
 
-            } else {
-                increment['ordinary_number'] = voteNumberModel.raw(trx, 'ordinary_number + 1');
-                increment['number_of_votes'] = voteNumberModel.raw(trx, 'number_of_votes + 1')
-            }
-             yield voteNumberModel.vote(trx, info.teacherId, increment);
+            // if((info.code + '')[0] == 1) {
+            //     increment['expert_number'] = voteNumberModel.raw(trx, 'expert_number + 1');
+            //     increment['number_of_votes'] = voteNumberModel.raw(trx, 'number_of_votes + 3');
+            //
+            // } else {
+            //      increment['ordinary_number'] = voteNumberModel.raw(trx, 'ordinary_number + 1');
+            increment['number_of_votes'] = voteNumberModel.raw(trx, 'number_of_votes + 1');
+            // }
+             yield voteNumberModel.vote(trx, info.CandidateId, increment);
             //更新邀请码状态
-            yield invitationCodeModel.update(trx, {invitation_code: info.code}, info.teacherId.toString());
+            // yield invitationCodeModel.update(trx, {invitation_code: info.code}, info.teacherId.toString());
         }).then(trx.commit).catch(trx.rollback);
+
     });
 };
 

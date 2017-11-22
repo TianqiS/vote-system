@@ -14,5 +14,11 @@ Model.prototype.raw = function (db, string) {
     return db.raw(string);
 };
 
+////////////////////////////////////////
+// Model.prototype.update = function (db,query) {
+//     return this.table(db).where(query);
+//
+// }
+
 
 module.exports = Model;

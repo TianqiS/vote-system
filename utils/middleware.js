@@ -13,7 +13,7 @@ exports.err = function () {
                     ctx.status = 400;
                     ctx.body = {
                         status: 'error',
-                        msg: errorList[error]
+                        msg: errorList[error] //errorList.error
                     };
                 }
             } else {
@@ -40,7 +40,7 @@ exports.session = function () {
     return session();
 };
 
-exports.checkLogin = function () {
+    exports.checkLogin = function () {
     return async(ctx, next) => {
         let url = ctx.url;
         let session = ctx['session'];
@@ -55,6 +55,5 @@ exports.checkLogin = function () {
 
 exports.public = function () {
     let serve = require('koa-static');
-
     return serve(__dirname + '/../public');
 };
