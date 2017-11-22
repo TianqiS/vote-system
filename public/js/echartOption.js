@@ -64,28 +64,28 @@ window.echartOption = {
             type: 'bar',
             data: []
         },
-        {
-            name: '专家票数',
-            type: 'bar',
-            barGap: '-100%',
-            itemStyle: {
-                normal: {
-                    color: 'transparent'
-                }
-            },
-            data: []
-        },
-        {
-            name: '师生票数',
-            type: 'bar',
-            barGap: '-100%',
-            itemStyle: {
-                normal: {
-                    color: 'transparent'
-                }
-            },
-            data: []
-        }
+        // {
+        //     name: '专家票数',
+        //     type: 'bar',
+        //     barGap: '-100%',
+        //     itemStyle: {
+        //         normal: {
+        //             color: 'transparent'
+        //         }
+        //     },
+        //     data: []
+        // },
+        // {
+        //     name: '师生票数',
+        //     type: 'bar',
+        //     barGap: '-100%',
+        //     itemStyle: {
+        //         normal: {
+        //             color: 'transparent'
+        //         }
+        //     },
+        //     data: []
+        // }
     ],
     textStyle: {
         fontSize: 14,

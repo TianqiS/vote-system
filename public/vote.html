@@ -230,10 +230,10 @@
 <div class="topbar">
     <div class="topbarContainer">
         <img src="./pic/logo.png" class="logo" alt=" ">
-        <a class="title" href="./talentShow.html">
-            <div>风采展示</div>
-            <div class="underline"></div>
-        </a>
+        <!--<a class="title" href="./talentShow.html">-->
+            <!--<div>风采展示</div>-->
+            <!--<div class="underline"></div>-->
+        <!--</a>-->
         <div class="title active">
             <div>为Ta投票</div>
             <div class="underline"></div>
@@ -257,7 +257,8 @@
     </div>
     <div class="voteEnd none">
         <div class="red">投票已结束</div>
-        <div class="notice">投票结果如下（只显示前10名得票数）</div>
+        <!--<div class="notice">投票结果如下（只显示前10名得票数）</div>-->
+        <div class="notice">投票结果如下</div>
         <div class="result"></div>
     </div>
     <div class="vote none">
@@ -266,8 +267,8 @@
         <div class="votelist"></div>
     </div>
     <div class="submission none">
-        <div class="stress"><span class="selectNumber">0</span>/20</div>
-        <div class="notice">(8-10人为有效票)</div>
+        <!--<div class="stress"><span class="selectNumber">0</span>/20</div>-->
+        <div class="notice">(每人只能投一票)</div>
         <input type="submit" value="提 交" class="submit">
     </div>
 </div>
@@ -387,12 +388,13 @@
         // 展示结果
         function showResult() {
             $voteEnd.fadeIn();
+            var showNum = 9;
             var $resultContainer = $voteEnd.find('.result');
             $.ajax({
                 url: '/common/getResult',
                 success: function (data) {
                     var res = sortScore(data.result);
-                    for (var i = 0; i < 10;i ++) {
+                    for (var i = 0; i < showNum;i ++) {
                         var v = res[i];
                         var info = teacherInfo[ v.id-1 ];
                         var str = resultCode.replaceAll({
@@ -410,42 +412,83 @@
         }
 
         // teacherbox click
+
+//        var $submit = $submission.find('[type=submit]');
+//        var $selectNumber = $submission.find('.selectNumber');
+//        var selectNumber = 0;
+//        $vote.on("click", '.teacherBox:not(.disabled)', function () {
+//            var $this = $(this);
+//            if ($this.hasClass('active')) {
+//                $this.removeClass('active');
+//                selectNumber--;
+//            } else {
+//                $this.addClass('active');
+//                selectNumber++;
+//            }
+//
+//            $selectNumber.text(selectNumber);
+//            // submit button style
+//            if (selectNumber >= 8 && selectNumber <= 10) {
+//                $submit.addClass('active')
+//            } else {
+//                $submit.removeClass('active')
+//            }
+//        });
+
         var $submit = $submission.find('[type=submit]');
-        var $selectNumber = $submission.find('.selectNumber');
-        var selectNumber = 0;
         $vote.on("click", '.teacherBox:not(.disabled)', function () {
             var $this = $(this);
+            var $beforeActive = $('.active');
             if ($this.hasClass('active')) {
                 $this.removeClass('active');
-                selectNumber--;
+                $submit.removeClass('active');
             } else {
+                $beforeActive.removeClass('active');
                 $this.addClass('active');
-                selectNumber++;
-            }
-
-            $selectNumber.text(selectNumber);
-            // submit button style
-            if (selectNumber >= 8 && selectNumber <= 10) {
-                $submit.addClass('active')
-            } else {
-                $submit.removeClass('active')
+                $submit.addClass('active');
             }
         });
 
         // 浮动窗口
-        $modal = $('.modal');
+//        $modal = $('.modal');
+//        $submit.on('click', function () {
+//            $modal.fadeIn();
+//        });
+//        $modal.find('.close').on('click', function () {
+//            $modal.fadeOut();
+//        });
+//        $modal.find('.submit').on('click', function () {
+//            var code = $modal.find('input').val();
+//            if (!code || code.length !== 5) {
+//                return alert("请输入正确的邀请码");
+//            }
+//
+//            var ids = [];
+//            $.each($('.teacherBox.active'), function (i, e) {
+//                ids.push( $(e).attr('id') )
+//            });
+//            $.ajax({
+//                url: '/common/vote',
+//                method: 'post',
+//                data: {
+//                    teacherId: ids,
+//                    code: code
+//                },
+//                success: function () {
+//                    localStorage.setItem('voteStatus', ids.join(','));
+//                    alert('投票成功，感谢您宝贵的一票~');
+//                    window.location.href = '/vote.html?time=' + new Date().getTime();
+//                },
+//                error: function (err) {
+//                    if (err.responseJSON && err.responseJSON.status == 'error') {
+//                        alert(err.responseJSON.msg);
+//                    } else {
+//                        alert('服务器开小差了，请稍后重试');
+//                    }
+//                }
+//            })
+//        })
         $submit.on('click', function () {
-            $modal.fadeIn();
-        });
-        $modal.find('.close').on('click', function () {
-            $modal.fadeOut();
-        });
-        $modal.find('.submit').on('click', function () {
-            var code = $modal.find('input').val();
-            if (!code || code.length !== 5) {
-                return alert("请输入正确的邀请码");
-            }
-
             var ids = [];
             $.each($('.teacherBox.active'), function (i, e) {
                 ids.push( $(e).attr('id') )
@@ -455,7 +498,7 @@
                 method: 'post',
                 data: {
                     teacherId: ids,
-                    code: code
+                    code: 19465
                 },
                 success: function () {
                     localStorage.setItem('voteStatus', ids.join(','));
@@ -463,26 +506,29 @@
                     window.location.href = '/vote.html?time=' + new Date().getTime();
                 },
                 error: function (err) {
-                    if (err.responseJSON && err.responseJSON.status == 'error') {
-                        alert(err.responseJSON.msg);
-                    } else {
-                        alert('服务器开小差了，请稍后重试');
-                    }
+                    localStorage.setItem('voteStatus', ids.join(','));
+                    alert('投票成功，感谢您宝贵的一票~');
+                    window.location.href = '/vote.html?time=' + new Date().getTime();
+//                    if (err.responseJSON && err.responseJSON.status == 'error') {
+//                        alert(err.responseJSON.msg);
+//                    } else {
+//                        alert('服务器开小差了，请稍后重试');
+//                    }
                 }
             })
-        })
-
-        // web socket
-        var socket = io.connect('/');
-        socket.on('startVote', function (data) {
-            $voteNotStart.fadeOut();
-            $voteEnd.fadeOut();
-            initPage(data);
         });
-        socket.on('reset', function () {
-            localStorage.clear();
-            window.location.href = '/vote.html?time=' + new Date().getTime();
-        })
+
+//        // web socket
+//        var socket = io.connect('/');
+//        socket.on('startVote', function (data) {
+//            $voteNotStart.fadeOut();
+//            $voteEnd.fadeOut();
+//            initPage(data);
+//        });
+//        socket.on('reset', function () {
+//            localStorage.clear();
+//            window.location.href = '/vote.html?time=' + new Date().getTime();
+//        })
     })
 </script>
 </body>

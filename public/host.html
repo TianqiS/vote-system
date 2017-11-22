@@ -68,7 +68,7 @@
         <img src="./pic/icon/start.png" alt=" " title="计时开始" class="timeStart">
         <img src="./pic/icon/reset.png" alt=" " title="重新计时" class="timeReset">
         <div class="checkbox">
-            <input type="checkbox" id="showFirstTen"><label for="showFirstTen">显示前十名</label>
+            <!--<input type="checkbox" id="showFirstTen"><label for="showFirstTen">显示前十名</label>-->
             <input type="checkbox" id="showTicket"><label for="showTicket">显示具体票数</label>
             <input type="checkbox" id="autoSort"><label for="autoSort">自动排序</label>
         </div>
@@ -201,15 +201,27 @@
             }
             echartOption.xAxis[0].data = teachers;
             echartOption.series[0].data = score;
-            echartOption.series[1].data = expert;
-            echartOption.series[2].data = ordinary;
+//            echartOption.series[1].data = expert;
+//            echartOption.series[2].data = ordinary;
             map.setOption(echartOption);
             window.data = data;
         }
 
         // web socket
-        var socket = io.connect('/');
-        socket.on('vote' ,function (d) {
+//        var socket = io.connect('/');
+//        socket.on('vote' ,function (d) {
+//            window.data.forEach(function (e) {
+//                if ( d.vote_direction.indexOf( e.id + "" ) === -1) return;
+//                e.number_of_votes += d.weight;
+//                if (d.weight == 3) {
+//                    e.expert_number += 1
+//                } else {
+//                    e.ordinary_number += 1
+//                }
+//            });
+//            updateEchart(window.data)
+//        })
+        window.fuck = function (d) {
             window.data.forEach(function (e) {
                 if ( d.vote_direction.indexOf( e.id + "" ) === -1) return;
                 e.number_of_votes += d.weight;
@@ -220,7 +232,7 @@
                 }
             });
             updateEchart(window.data)
-        })
+        }
     })
 </script>
 </body>
