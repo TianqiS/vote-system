@@ -11,10 +11,10 @@ let voteNumberModule = require('../modules/voteNumber');
 router.post('/start', async ctx => {
     global.duration = _.pick(ctx.request.body, ['duration']).duration || 3;
     global.timeInterval = new Date().getTime();
-    global.io.emit('startVote', {
-        time: global.timeInterval,
-        duration: global.duration
-    });
+    // global.io.emit('startVote', {
+    //     time: global.timeInterval,
+    //     duration: global.duration
+    // });
     ctx.body = {
         status: 'success',
         message: '开始成功'
