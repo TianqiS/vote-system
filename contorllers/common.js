@@ -30,11 +30,11 @@ router.post('/login', async function (ctx) {
  * 参数：教师Id（数组）， 邀请码（字符串）
  */
 router.post('/vote',mid.timeControl(), async ctx => {
-    let schema = Joi.array().items(Joi.number());
+    let schema = Joi.array().items(Joi.string());
     let info = _.pick(ctx.request.body, ['CandidateId']);
     schema.validate((info.CandidateId),err => {
-        throw 40008;
-    }) ;
+        if(err) throw 40008;
+    });
     // let teacherArray = info.teacherId.sort();
 
     // console.log(await invitationCodeModule.getCode(info.code));
@@ -59,8 +59,7 @@ router.post('/vote',mid.timeControl(), async ctx => {
     // }
     //投票
     await voteNumberModule.vote(info);
-
-    let votedNumber = await voteNumberModule.getInfo({});
+    let votedNumber = await voteNumberModule.getInfo({id: info.CandidateId * 1}).first();
     global.io.emit('vote', {
         votedNumber: votedNumber
     });

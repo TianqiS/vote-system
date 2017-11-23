@@ -196,8 +196,8 @@
                 var info = teacherInfo[ item.id - 1 ];
                 teachers.push(info.number + info.name);
                 score.push(item.number_of_votes);
-                expert.push(item.expert_number);
-                ordinary.push(item.ordinary_number);
+//                expert.push(item.expert_number);
+//                ordinary.push(item.ordinary_number);
             }
             echartOption.xAxis[0].data = teachers;
             echartOption.series[0].data = score;
@@ -207,32 +207,13 @@
             window.data = data;
         }
 
-        // web socket
-//        var socket = io.connect('/');
-//        socket.on('vote' ,function (d) {
-//            window.data.forEach(function (e) {
-//                if ( d.vote_direction.indexOf( e.id + "" ) === -1) return;
-//                e.number_of_votes += d.weight;
-//                if (d.weight == 3) {
-//                    e.expert_number += 1
-//                } else {
-//                    e.ordinary_number += 1
-//                }
-//            });
-//            updateEchart(window.data)
-//        })
-        window.fuck = function (d) {
-            window.data.forEach(function (e) {
-                if ( d.vote_direction.indexOf( e.id + "" ) === -1) return;
-                e.number_of_votes += d.weight;
-                if (d.weight == 3) {
-                    e.expert_number += 1
-                } else {
-                    e.ordinary_number += 1
-                }
-            });
+         //web socket
+        var socket = io.connect('/');
+        socket.on('vote' ,function (d) {
+            var index = d.votedNumber.id - 1;
+            window.data[index].number_of_votes = d.votedNumber.number_of_votes;
             updateEchart(window.data)
-        }
+        })
     })
 </script>
 </body>

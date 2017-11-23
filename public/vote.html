@@ -262,8 +262,8 @@
         <div class="result"></div>
     </div>
     <div class="vote none">
-        <div>距投票结束还有</div>
-        <div class="timer red"></div>
+        <!--<div>距投票结束还有</div>-->
+        <!--<div class="timer red"></div>-->
         <div class="votelist"></div>
     </div>
     <div class="submission none">
@@ -273,22 +273,22 @@
     </div>
 </div>
 
-<div class="modal none">
-    <div class="absolute center card">
-        <img class="close" src="./pic/icon/close.png" alt="">
-        <img class="image" src="./pic/icon/bell.png" alt="">
-        <div class="note">此活动采取【评委投票制】，请输入您的【邀请码】以验证评委身份。</div>
-        <input type="text" maxlength="5">
-        <div class="submit">确 认</div>
-    </div>
-</div>
+<!--<div class="modal none">-->
+    <!--<div class="absolute center card">-->
+        <!--<img class="close" src="./pic/icon/close.png" alt="">-->
+        <!--<img class="image" src="./pic/icon/bell.png" alt="">-->
+        <!--<div class="note">此活动采取【评委投票制】，请输入您的【邀请码】以验证评委身份。</div>-->
+        <!--<input type="text" maxlength="5">-->
+        <!--<div class="submit">确 认</div>-->
+    <!--</div>-->
+<!--</div>-->
 
 <div class="copyright">&copy; 2017.Powered by RedHome Studio 红色家园</div>
 
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="./js/teacherData.js"></script>
 <script src="./js/utils.js"></script>
-<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>
+<!--<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>-->
 <script id="teacherResult" type="application/xml">
     <div class="item">
         <div class="right"><span class="number stress">__score__</span> / 票</div>
@@ -348,7 +348,9 @@
         // 根据后台时间情况判断界面显示样式
         function initPage(data) {
             if (!data.time) {
-                $voteNotStart.fadeIn();
+//                $voteNotStart.fadeIn();
+                $vote.fadeIn();
+                $submission.fadeIn();
                 return
             }
             var timeNow = new Date().getTime();
@@ -436,15 +438,15 @@
 //        });
 
         var $submit = $submission.find('[type=submit]');
+        var $selected = null;
         $vote.on("click", '.teacherBox:not(.disabled)', function () {
             var $this = $(this);
-            var $beforeActive = $('.active');
-            if ($this.hasClass('active')) {
-                $this.removeClass('active');
-                $submit.removeClass('active');
-            } else {
-                $beforeActive.removeClass('active');
+            if (!$this.hasClass('active')) {
+                if ($selected !== null){
+                    $selected.removeClass('active');
+                }
                 $this.addClass('active');
+                $selected = $this;
                 $submit.addClass('active');
             }
         });
@@ -489,31 +491,25 @@
 //            })
 //        })
         $submit.on('click', function () {
-            var ids = [];
-            $.each($('.teacherBox.active'), function (i, e) {
-                ids.push( $(e).attr('id') )
-            });
             $.ajax({
                 url: '/common/vote',
                 method: 'post',
                 data: {
-                    teacherId: ids,
-                    code: 19465
+                    CandidateId: [$selected.attr('id')]
                 },
                 success: function () {
-                    localStorage.setItem('voteStatus', ids.join(','));
+                    localStorage.setItem('voteStatus', [$selected.attr('id')]);
                     alert('投票成功，感谢您宝贵的一票~');
-                    window.location.href = '/vote.html?time=' + new Date().getTime();
                 },
                 error: function (err) {
-                    localStorage.setItem('voteStatus', ids.join(','));
-                    alert('投票成功，感谢您宝贵的一票~');
+                    if (err.responseJSON && err.responseJSON.status == 'error') {
+                        alert(err.responseJSON.msg);
+                    } else {
+                        alert('服务器开小差了，请稍后重试');
+                    }
+                },
+                complete: function () {
                     window.location.href = '/vote.html?time=' + new Date().getTime();
-//                    if (err.responseJSON && err.responseJSON.status == 'error') {
-//                        alert(err.responseJSON.msg);
-//                    } else {
-//                        alert('服务器开小差了，请稍后重试');
-//                    }
                 }
             })
         });

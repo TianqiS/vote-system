@@ -12,8 +12,8 @@ voteNumber.vote = function (db, ids, query) {
 voteNumber.reset = function () {
     return this.get(db, {}).update({
         number_of_votes: 0,
-        expert_number: 0,
-        ordinary_number: 0
+        // expert_number: 0,
+        // ordinary_number: 0
     });
 };
 
