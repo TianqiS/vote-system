@@ -34,17 +34,12 @@ exports.timeControl = function () {
     }
 };
 
-exports.session = function () {
-    const session = require('koa-session2');
 
-    return session();
-};
-
-    exports.checkLogin = function () {
+exports.checkLogin = function () {
     return async(ctx, next) => {
         let url = ctx.url;
-        let session = ctx['session'];
-        let isAdmin = session && session.type == 'admin';
+        let token = ctx.header.authorization;
+        let isAdmin = token && token == '6BE530E78ADE605347059701A54F996E';
 
         if (url.split('/')[1] == 'admin' && !isAdmin) {
             throw 40006;
