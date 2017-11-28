@@ -18,11 +18,12 @@ router.post('/login', async function (ctx) {
         throw 40005;
     }
 
-    ctx.session.type = 'admin';
+    let token = '6BE530E78ADE605347059701A54F996E';
     ctx.body = {
         status: 'success',
         message: '登陆成功',
-        session: ctx.session
+        session: ctx.session,
+        token: token
     }
 });
 /**
@@ -60,9 +61,6 @@ router.post('/vote',mid.timeControl(), async ctx => {
     //投票
     await voteNumberModule.vote(info);
     let votedNumber = await voteNumberModule.getInfo({id: info.CandidateId * 1}).first();
-    global.io.emit('vote', {
-        votedNumber: votedNumber
-    });
     ctx.body = {
         status : 'success',
         msg : '投票成功'

@@ -10,20 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "co": "^4.6.0",
-    "dependencies": "0.0.1",
     "joi": "^13.0.2",
     "knex": "^0.12.9",
-    "koa": "^2.4.1",
-    "koa-body": "^2.5.0",
+    "koa": "^2.2.0",
+    "koa-body": "^2.0.0",
     "koa-generic-session": "^1.11.5",
     "koa-mysql-session": "0.0.2",
-    "koa-router": "^7.3.0",
-    "koa-session2": "^2.2.5",
+    "koa-router": "^7.1.1",
     "koa-static": "^3.0.0",
-    "loadash": "^1.0.0",
     "lodash": "^4.17.4",
-    "mysql": "^2.15.0",
-    "socket.io": "^1.7.4"
+    "mysql": "^2.13.0"
   },
   "devDependencies": {},
   "repository": {
