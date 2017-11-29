@@ -97,6 +97,7 @@
             if(duration<10)return '0'+duration;
             else return duration.toString();
         }
+
         // init time bar
         $.ajax({
             method: 'get',
@@ -136,7 +137,6 @@
                 },
                 success: function () {
                     $timeStart.addClass('disabled');
-                    cyclingAjax(cycle);
                     startTime($timeContainer, DURATION * 60 * 1000, function () {
                         // over
                         $timeStart.removeClass('disabled');
@@ -190,7 +190,7 @@
 
         //轮询
         var cycle;
-
+        cyclingAjax(cycle);
         function cyclingAjax(c){
             cycle = setTimeout(function(){
                 $.ajax({
