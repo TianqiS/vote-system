@@ -119,12 +119,25 @@
                 startTime($timeContainer, surplus, function () {
                     // over
                     $timeStart.removeClass('disabled');
-                })
+                });
+                $.ajax({
+                    method: "get",
+                    url: "/admin/reset",
+                    headers:{
+                        authorization:token
+                    },
+                    success: function () {
+                    },
+                    error: function (data) {
+                        alert(data.responseJSON.msg);
+                    }
+                });
             },
             error: function () {
                 alert('网络请求失败，请稍后重试');
             }
         });
+
         //开始倒计时
         $timeStart.on('click', function () {
             $(this).addClass('disabled');
