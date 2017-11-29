@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>2017杭电十佳教师评选-为Ta投票</title>
+    <title>第十一届月牙弯朗诵比赛最佳人气奖评选</title>
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/bars.css">
     <link rel="stylesheet" href="./css/utils.css">
@@ -34,7 +34,7 @@
     .voteRules .content {
         line-height: 24px;
         font-size: 14px;
-        max-width: 480px;
+        max-width: 350px;
         margin: 0 auto;
         text-align: left;
     }
@@ -60,7 +60,7 @@
         margin: 5px auto 0 auto;
     }
     .teacherBox .shade .content{
-        width: 64px;
+        width: 100px;
         height: 75px;
     }
     .teacherBox.active .shade {
@@ -78,7 +78,7 @@
 
     .voteEnd .notice {
         font-size: 14px;
-        margin-top: 40px;
+        margin-top: 25px;
         margin-bottom: 20px;
     }
     .result {
@@ -234,22 +234,21 @@
             <!--<div>风采展示</div>-->
             <!--<div class="underline"></div>-->
         <!--</a>-->
-        <div class="title active">
-            <div>为Ta投票</div>
-            <div class="underline"></div>
-        </div>
+        <!--<div class="title active">-->
+            <!--<div>为Ta投票</div>-->
+            <!--<div class="underline"></div>-->
+        <!--</div>-->
     </div>
 </div>
 <div class="container">
-    <img class="banner" src="http://static.hduin.club/bestTeacher/banner_pc.jpg"/>
-    <img class="banner phone" src="http://static.hduin.club/bestTeacher/banner_phone.jpg"/>
+    <img class="banner" src="pic/banner_pc.jpg"/>
+    <img class="banner phone" src="pic/banner_phone.jpg"/>
     <div class="voteRules">
         <div class="title">投票规则</div>
         <div class="content">
-            <div>● 此活动采取评委团无记名投票，评委团由专家评委和师生评委组成；</div>
-            <div>● 每位评委限投一次，每次选8-10人为有效票；</div>
-            <div>● 专家评委投一票计3票、师生评委投一票计1票；</div>
-            <div>● 最终得票数排在前10名的候选人获得”十佳教师 & 师德先进个人“称号。</div>
+            <div>● 此活动采取无记名投票，由现场师生投票评比奖项；</div>
+            <div>● 每位师生限投一次，每次仅能选一个节目；</div>
+            <div>● 由最终各节目得票数排名评出奖项。</div>
         </div>
     </div>
     <div class="voteNotStart none">
@@ -301,7 +300,7 @@
 </script>
 <script id="teacherContainer" type="application/xml">
     <div class="teacherBox" id="__id__">
-        <img src="http://static.hduin.club/bestTeacher/teacherLong/__name__.jpg"/>
+        <img src="pic/teacherLong/__name__.jpg"/>
         <div class="absolute center shade">
             <div class="absolute center content">
                 <div class="number">
@@ -503,6 +502,7 @@
                 },
                 error: function (err) {
                     if (err.responseJSON && err.responseJSON.status == 'error') {
+                        //不在投票时间
                         alert(err.responseJSON.msg);
                     } else {
                         alert('服务器开小差了，请稍后重试');

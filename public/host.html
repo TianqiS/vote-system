@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>2017杭电十佳教师评选-投票结果</title>
+    <title>第十一届月牙弯朗诵比赛最佳人气奖评选-投票结果</title>
     <link rel="stylesheet" href="./css/common.css">
     <link rel="stylesheet" href="./css/utils.css">
     <link rel="stylesheet" href="./css/bars.css">
@@ -56,7 +56,7 @@
 <body>
 <div class="topbar">
     <div class="topbarContainer">
-        <img src="./pic/logo.png" class="logo" alt=" ">
+        <!--<img src="./pic/logo.png" class="logo" alt=" ">-->
         <div class="title active">
             <div>实时计票台</div>
         </div>
@@ -81,27 +81,38 @@
 <script src="./js/teacherData.js"></script>
 <script src="https://cdn.bootcss.com/echarts/3.5.4/echarts.min.js"></script>
 <script src="./js/echartOption.js"></script>
-<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>
+<!--<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>-->
 <script>
+
     $(function () {
         window.config = {};
         var $timeContainer = $('.timebar .time');
         var $timeStart = $('.timeStart');
+        var token = localStorage.getItem("sj_token");
+        var DURATION = 3;
+        function setDuration(duration) {
+            DURATION = duration;
+        }
+        function durationFormat(duration){
+            if(duration<10)return '0'+duration;
+            else return duration.toString();
+        }
         // init time bar
         $.ajax({
             method: 'get',
             url: '/common/time',
             success: function (data) {
+                setDuration(data.duration);
                 //check
                 if (!data.time) {
-                    $timeContainer.text("00:03:00");
+                    $timeContainer.text("00:"+durationFormat(DURATION)+":00");
                     return
                 }
                 var timeNow = new Date().getTime();
                 var timeEnd = data.time + 1000 * 60 * data.duration;
                 var surplus = timeEnd - timeNow;
                 if (surplus < 0) {
-                    $timeContainer.text("00:03:00");
+                    $timeContainer.text("00:"+durationFormat(DURATION)+":00");
                     return
                 }
                 $timeStart.addClass('disabled');
@@ -114,14 +125,19 @@
                 alert('网络请求失败，请稍后重试');
             }
         });
+        //开始倒计时
         $timeStart.on('click', function () {
             $(this).addClass('disabled');
             $.ajax({
                 method: "post",
                 url: "/admin/start",
+                headers:{
+                    authorization:token
+                },
                 success: function () {
                     $timeStart.addClass('disabled');
-                    startTime($timeContainer, 3 * 60 * 1000, function () {
+                    cyclingAjax(cycle);
+                    startTime($timeContainer, DURATION * 60 * 1000, function () {
                         // over
                         $timeStart.removeClass('disabled');
                     })
@@ -131,12 +147,15 @@
                 }
             })
         });
+        //重置倒计时
         $('.timeReset').on('click', function () {
             if (!confirm('确认清空所有数据？')) return;
-
             $.ajax({
                 method: "get",
                 url: "/admin/reset",
+                headers:{
+                    authorization:token
+                },
                 success: function () {
                     location.reload()
                 },
@@ -168,12 +187,31 @@
         // echart
         window.map = echarts.init(document.getElementById("map"));
 
-        $.ajax({
-            url: '/common/getResult',
-            success: function (data) {
-                updateEchart(data.result);
-            }
-        });
+
+        //轮询
+        var cycle;
+
+        function cyclingAjax(c){
+            cycle = setTimeout(function(){
+                $.ajax({
+                    url: '/common/getResult',
+                    type:'get',
+
+                    success: function (data) {
+                        updateEchart(data.result);
+                        cyclingAjax(c);
+                    },
+                    error:function (data) {
+                        alert(data.responseJSON.msg);
+                        stopAjax(c);
+                    }
+                });
+            },1000)
+        }
+
+        function stopAjax(c){
+            clearTimeout(c);
+        }
 
         function updateEchart(data) {
             var teachers = [];
@@ -208,12 +246,12 @@
         }
 
          //web socket
-        var socket = io.connect('/');
-        socket.on('vote' ,function (d) {
-            var index = d.votedNumber.id - 1;
-            window.data[index].number_of_votes = d.votedNumber.number_of_votes;
-            updateEchart(window.data)
-        })
+//        var socket = io.connect('/');
+//        socket.on('vote' ,function (d) {
+//            var index = d.votedNumber.id - 1;
+//            window.data[index].number_of_votes = d.votedNumber.number_of_votes;
+//            updateEchart(window.data)
+//        })
     })
 </script>
 </body>

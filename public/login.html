@@ -218,8 +218,9 @@
                     userName: username,
                     password: password,
                 },
-                success: function () {
-                    window.location.href = './host.html'
+                success: function (data) {
+                    localStorage.setItem("sj_token",data.token);
+                    window.location.href = './host.html';
                 },
                 error: function (err) {
                     warning(err.responseJSON.msg)

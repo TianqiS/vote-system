@@ -9,7 +9,7 @@ let voteNumberModule = require('../modules/voteNumber');
  * 参数：duration(分钟)
  */
 router.post('/start', async ctx => {
-    global.duration = _.pick(ctx.request.body, ['duration']).duration || 3;
+    global.duration = _.pick(ctx.request.body, ['duration']).duration || 1;
     global.timeInterval = new Date().getTime();
 
     ctx.body = {
@@ -24,7 +24,6 @@ router.get('/reset', async ctx => {
     global.timeInterval = 0;
     await invitationCodeModule.reset();
     await voteNumberModule.reset();
-    global.io.emit('reset');
 
     ctx.body = {
         status: 'success',

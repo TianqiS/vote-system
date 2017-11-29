@@ -63,7 +63,7 @@ window.echartOption = {
             name: '总票数',
             type: 'bar',
             data: []
-        },
+        }
         // {
         //     name: '专家票数',
         //     type: 'bar',
@@ -88,6 +88,6 @@ window.echartOption = {
         // }
     ],
     textStyle: {
-        fontSize: 14,
+        fontSize: 14
     }
 };
