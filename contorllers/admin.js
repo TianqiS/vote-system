@@ -24,7 +24,6 @@ router.get('/reset', async ctx => {
     global.timeInterval = 0;
     await invitationCodeModule.reset();
     await voteNumberModule.reset();
-    global.io.emit('reset');
 
     ctx.body = {
         status: 'success',

@@ -185,6 +185,8 @@
             cycle = setTimeout(function(){
                 $.ajax({
                     url: '/common/getResult',
+                    type:'get',
+
                     success: function (data) {
                         updateEchart(data.result);
                         cyclingAjax(c);
