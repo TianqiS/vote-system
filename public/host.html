@@ -83,26 +83,36 @@
 <script src="./js/echartOption.js"></script>
 <!--<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>-->
 <script>
+
     $(function () {
         window.config = {};
         var $timeContainer = $('.timebar .time');
         var $timeStart = $('.timeStart');
         var token = localStorage.getItem("sj_token");
+        var DURATION = 3;
+        function setDuration(duration) {
+            DURATION = duration;
+        }
+        function durationFormat(duration){
+            if(duration<10)return '0'+duration;
+            else return duration.toString();
+        }
         // init time bar
         $.ajax({
             method: 'get',
             url: '/common/time',
             success: function (data) {
+                setDuration(data.duration);
                 //check
                 if (!data.time) {
-                    $timeContainer.text("00:10:00");
+                    $timeContainer.text("00:"+durationFormat(DURATION)+":00");
                     return
                 }
                 var timeNow = new Date().getTime();
                 var timeEnd = data.time + 1000 * 60 * data.duration;
                 var surplus = timeEnd - timeNow;
                 if (surplus < 0) {
-                    $timeContainer.text("00:10:00");
+                    $timeContainer.text("00:"+durationFormat(DURATION)+":00");
                     return
                 }
                 $timeStart.addClass('disabled');
@@ -127,7 +137,7 @@
                 success: function () {
                     $timeStart.addClass('disabled');
                     cyclingAjax(cycle);
-                    startTime($timeContainer, 10 * 60 * 1000, function () {
+                    startTime($timeContainer, DURATION * 60 * 1000, function () {
                         // over
                         $timeStart.removeClass('disabled');
                     })

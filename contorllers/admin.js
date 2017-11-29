@@ -9,7 +9,7 @@ let voteNumberModule = require('../modules/voteNumber');
  * 参数：duration(分钟)
  */
 router.post('/start', async ctx => {
-    global.duration = _.pick(ctx.request.body, ['duration']).duration || 10;
+    global.duration = _.pick(ctx.request.body, ['duration']).duration || 1;
     global.timeInterval = new Date().getTime();
 
     ctx.body = {
