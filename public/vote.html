@@ -34,7 +34,7 @@
     .voteRules .content {
         line-height: 24px;
         font-size: 14px;
-        max-width: 480px;
+        max-width: 350px;
         margin: 0 auto;
         text-align: left;
     }
@@ -60,7 +60,7 @@
         margin: 5px auto 0 auto;
     }
     .teacherBox .shade .content{
-        width: 64px;
+        width: 100px;
         height: 75px;
     }
     .teacherBox.active .shade {
@@ -234,10 +234,10 @@
             <!--<div>风采展示</div>-->
             <!--<div class="underline"></div>-->
         <!--</a>-->
-        <div class="title active">
-            <div>为Ta投票</div>
-            <div class="underline"></div>
-        </div>
+        <!--<div class="title active">-->
+            <!--<div>为Ta投票</div>-->
+            <!--<div class="underline"></div>-->
+        <!--</div>-->
     </div>
 </div>
 <div class="container">
@@ -502,6 +502,7 @@
                 },
                 error: function (err) {
                     if (err.responseJSON && err.responseJSON.status == 'error') {
+                        //不在投票时间
                         alert(err.responseJSON.msg);
                     } else {
                         alert('服务器开小差了，请稍后重试');
