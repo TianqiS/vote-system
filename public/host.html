@@ -135,6 +135,9 @@
                 headers:{
                     authorization:token
                 },
+                data:{
+                    duration:5
+                },
                 success: function () {
                     $timeStart.addClass('disabled');
                     startTime($timeContainer, DURATION * 60 * 1000, function () {
