@@ -2,7 +2,7 @@ let config = {
     db: {
         host     :  'localhost',
         user     :  'root',
-        password :  'songye123',
+        password :  '',
         database :  'sjteacher',
         timezone : '+8:00',
         charset  : 'UTF8MB4_GENERAL_CI',
