@@ -53,10 +53,11 @@ function startTime($container, surplus, cb){
 
 // 将剩余毫秒数转换成 hh: mm: ss 的字符串形式
 function timeFormat(time){
-    var d=new Date(time);
-    var sec = d.getSeconds();
-    var min = d.getMinutes();
-    var hour = d.getHours() - 8;
+    var d = moment(time).valueOf('x');
+    var sec = moment(time).seconds();
+    var min = moment(time).minutes();
+    var hour = moment(time).hours() - 8;
+
     return num2txt(hour)+":"+num2txt(min)+":"+num2txt(sec);
 }
 function num2txt(number){
