@@ -83,7 +83,6 @@
 <script src="./js/echartOption.js"></script>
 <!--<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>-->
 <script>
-
     $(function () {
         window.config = {};
         var $timeContainer = $('.timebar .time');
@@ -172,6 +171,7 @@
             updateEchart(window.data);
         });
         $('#showTicket').on('click', function () {
+
             if (this.checked) {
                 map.setOption({
                     label: {normal: {show: true}}
@@ -195,6 +195,8 @@
         var cycle;
         cyclingAjax(cycle);
 
+
+
         function cyclingAjax(c){
             cycle = setTimeout(function(){
                 $.ajax({
@@ -203,7 +205,15 @@
 
                     success: function (data) {
                         updateEchart(data.result);
-                        cyclingAjax(c);
+
+                        if($('#showTicket')[0].checked) {
+                            console.log(123)
+                            map.setOption({
+                                label: {normal: {show: true}}
+                            })
+                        }
+                            cyclingAjax(c);
+
                     },
                     error:function (data) {
                         alert(data.responseJSON.msg);
@@ -211,6 +221,8 @@
                     }
                 });
             },1000)
+
+
         }
 
         function stopAjax(c){
